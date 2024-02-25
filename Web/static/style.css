@@ -1,0 +1,395 @@
+
+
+body {
+    background-color: #e8e8a5;
+}
+
+.logout:hover {
+    background-color: red;
+    opacity: 0.8;
+}
+
+
+
+.panel-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    border-radius: 2%;
+    width: 24rem;
+    height: 32rem;
+    background-color: #8f8f4f;
+    top: 8rem;
+    left: 48rem;
+}
+
+.panel-title {
+    position: absolute;
+    text-align: center;
+    font-size: 32px;
+}
+
+.panel-block {
+    position: relative;
+    top: 3rem;
+}
+
+.username-block, .email-block, .password-block, .password_confirm-block {
+    margin-top: 30px;
+}
+
+.username, .email, .password, .password_confirm {
+    width: 20rem;
+    font-size: 20px;
+    box-shadow: 0 0 30px rgb(0, 0, 0);
+}
+
+.username:focus, .email:focus, .password:focus, .password_confirm:focus {
+    box-shadow: 0 0 30px rgb(0, 200, 0);
+}
+
+.button-block {
+    position: relative;
+    top: 4rem;
+    text-align: center;
+}
+
+.button {
+    font-size: 24px;
+}
+
+.button:hover {
+    opacity: 0.8;
+    box-shadow: 0 0 30px rgb(0, 200, 0);
+}
+
+
+.upload-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: start;
+    width: 64rem;
+    height: 28rem;
+    background-color: #8f8f4f;
+    top: 8rem;
+    left: 36rem;
+}
+
+
+.upload-file-block {
+    position: absolute;
+    top: 18rem;
+    margin-left: 5px;   
+}
+
+.upload-file {
+    font-size: 16px;
+}
+
+#previewImg {
+    position: absolute;
+    display: none;
+    max-width: 600px;
+    max-height: 600px;
+    top: 2rem;
+    left: 26rem;
+    resize: horizontal;
+}
+
+.upload-title-block {
+    position: relative;
+    bottom: 6rem;
+    margin-left: 5px;
+}
+
+.upload-title {
+    font-size: 20px;
+    width: 24rem;
+}
+
+.upload-description-block {
+    position: relative;
+    bottom: 4rem;
+    margin-left: 5px;
+}
+
+.upload-description {
+    font-size: 18px;
+    height: 6rem;
+    width: 24rem;
+    resize: none;
+}
+
+.upload-price-block {
+    position: relative;
+    bottom: 2rem;
+    margin-left: 5px;
+}
+
+.upload-price {
+    font-size: 20px;
+    width: 120px;
+}
+
+.upload-button-block {
+    position: relative;
+    top: 6rem;
+    text-align: center;
+}
+
+.upload-button {
+    font-size: 28px;
+    width: 80%;
+}
+
+.shop-container {
+    position: relative;
+    top: 4rem;
+    display: flex;
+    flex-wrap: wrap;
+    width: 99%;
+}
+
+.shop-body {
+    width: 18rem;
+    height: 32rem;
+    margin: 1rem 0 1rem 1rem;
+    background-color: gray;
+    overflow-y: auto;
+    position: relative;
+}
+
+.shop-body::-webkit-scrollbar {
+    width: 0;
+}
+
+#shop-image {
+    max-width: 100%;
+    max-height: 12rem;
+    width: 18rem;
+}
+
+.shop-title {
+    position: relative;
+    text-align: center;
+    font-size: 24px;
+    overflow-wrap: break-word;
+}
+
+
+.shop-description {
+    position: relative;
+    top: 1rem;
+    font-size: 18px;
+    overflow-wrap: break-word;
+}
+
+.shop-list {
+    list-style: none;
+}
+
+.shop-item {
+    position: relative;
+    font-size: 20px;
+    left: -1rem;
+    top: 2rem;
+}
+
+.shop-cart {
+    position: relative;
+    width: 6rem;
+    height: 3rem;
+    top: 4rem;
+    left: 1rem;
+    font-size: 22px;
+    background-color: yellowgreen;
+    border-radius: 50px;
+}
+
+.cart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    background-color: white;
+    width: 60%;
+    height: 48rem;
+    top: 6rem;
+    left: 22rem;
+    overflow: auto;
+    border-radius: 10px;
+}
+
+.cart-container::-webkit-scrollbar {
+    width: 0;
+}
+
+.cart-body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    width: 90%;
+    height: 4rem;
+    margin-top: 1rem;
+    background-color: gray;
+}
+
+.cart-title, .cart-description, .cart-price {
+    color: black;
+}
+
+.cart-title {
+    position: relative;
+    left: 2rem;
+    font-size: 28px;
+}
+
+.cart-description {
+    position: absolute;
+    left: 12rem;
+    font-size: 24px;
+    width: 36rem;
+    overflow: hidden;
+}
+
+.cart-price {
+    position: absolute;
+    left: 52rem;
+    font-size: 24px;
+}
+
+
+.cart-remove {
+    position: absolute;
+    left: 58rem;
+    font-size: 24px;
+    border-radius: 15px;
+    background-color: red   ;
+}
+
+.cart-remove:hover {
+    opacity: .6;
+}
+
+
+@media screen and (max-width: 600px) {
+    .panel-container {
+        width: 16rem;
+        height: 24rem;
+        top: 4rem;
+        left: 4rem;
+    }
+
+    .username, .email, .password, .password_confirm {
+        width: 14rem;
+        font-size: 16px;
+    }
+
+    .button-block {
+        top: 2rem;
+    }
+
+    .button {
+        font-size: 20px;
+    }
+    
+    .shop-body {
+        left: 2rem;
+    }
+
+    .upload-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: start;
+        width: 22rem;
+        height: 18rem;
+        background-color: #8f8f4f;
+        top: 8rem;
+        left: 1rem;
+    }
+
+
+    #previewImg {
+        left: 14rem;
+        max-width: 150px;
+        max-height: 250px;
+    }
+
+    .upload-file-block {
+        top: 14rem;
+    }
+
+    .upload-file {
+        font-size: 12px;
+    }
+
+    .upload-title-block {
+        top: -2rem;
+    }
+
+    .upload-title {
+        font-size: 12px;
+        width: 10rem;
+    }
+
+    .upload-description-block {
+        top: 0rem;
+    }
+    .upload-description {
+        font-size: 12px;
+        width: 10rem;
+    }
+
+    .upload-price-block {
+        top: 0rem;
+    }
+
+    .upload-price {
+        font-size: 8px;
+        width: 4rem;
+    }
+
+    .cart-container {
+        left: 0rem;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .cart-body {
+        width: 100%;
+        height: 8rem;
+    }
+
+    .cart-title {
+        left: 0.5rem;
+        font-size: 20px;
+        width: 4rem;    
+        overflow-wrap: break-word;
+    }
+
+    .cart-description {
+        top: 2rem;
+        left: 6rem;
+        font-size: 16px;
+        overflow: hidden;
+        width: 12rem;
+    }
+
+    .cart-price {
+        top: 1rem;
+        left: 20rem;
+    }
+
+    .cart-remove {
+        font-size: 20px;
+        top: 4rem;
+        left: 19rem;
+    }
+}

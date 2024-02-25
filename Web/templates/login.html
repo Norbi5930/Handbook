@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+
+
+
+
+{% block content %}
+    <form class="panel-container" action="" method="post">
+        {{ form.hidden_tag() }}
+        <legend class="panel-title">Bejelentkezés</legend>
+        <div class="panel-block">
+            <div class="username-block">
+                {{ form.username(class="username") }}
+            </div>
+            <div class="password-block">
+                {{ form.password(class="password") }}
+            </div>
+            <div class="button-block">
+                {{ form.submit(class="button") }}
+            </div>
+        </div>
+    </form>
+
+
+{% endblock content %}

@@ -1,0 +1,36 @@
+{% extends "index.html" %}
+
+
+
+
+
+{% block content %}
+    <h2 style="position: relative; text-align: center;">WebShop Feltöltés</h2>
+    <form action="" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="upload-container">
+            <div class="upload-file-block">
+                {{ form.file(class="upload-file") }}
+            </div>
+            <div class="upload-image-block">
+                <img id="previewImg" src="#" alt="Image">
+            </div>
+            <div class="upload-title-block">
+                {{ form.title(class="upload-title")}}
+            </div>
+            <div class="upload-description-block">
+                {{ form.description(class="upload-description") }}
+            </div>
+            <div class="upload-price-block">
+                {{ form.price(class="upload-price") }}$
+            </div>
+            <div class="upload-button-block">
+                {{ form.submit(class="upload-button") }}
+            </div>
+        </div>
+    </form>
+
+    <script src="{{ url_for('static', filename='JS/upload.js') }}"></script>
+
+
+{% endblock content %}

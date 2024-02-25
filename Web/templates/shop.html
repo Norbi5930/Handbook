@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <div class="shop-container">
+        {% for item in items %}
+            <div class="shop-body">
+                {% if item.image_file %}
+                    <img id="shop-image" src="{{ url_for('static', filename='images/' + item.image_file) }}" alt="Image">
+                {% endif %}
+                <h5 class="shop-title">{{ item.title}}</h5>
+                <p class="shop-description">{{ item.description }}</p>
+                <ul class="shop-list">
+                    <li class="shop-item">{{ item.price }}$</li>
+                </ul>
+                <button class="shop-cart" type="button" onclick="addCart('{{ item.id }}')">Kosárba</button>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script src="{{ url_for('static', filename='JS/shop.js') }}"></script>
+{% endblock content %}

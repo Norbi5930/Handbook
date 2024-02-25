@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+
+
+
+{% block content %}
+
+    <form class="panel-container" action="" method="post">
+        {{ form.hidden_tag() }}
+        <legend class="panel-title">Regisztráció</legend>
+        <div class="panel-block">
+            <div class="username-block">
+                {{ form.username(class="username") }}
+            </div>
+            <div class="email-block">
+                {{ form.email(class="email") }}
+            </div>
+            <div class="password-block">
+                {{ form.password(class="password") }}
+            </div>
+            <div class="password_confirm-block">
+                {{ form.password_confirm(class="password_confirm") }}
+            </div>
+            <div class="button-block">
+                {{ form.submit(class="button")}}
+            </div>
+        </div>
+    </form>
+
+
+
+{% endblock content %}

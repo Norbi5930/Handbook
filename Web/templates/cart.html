@@ -1,0 +1,33 @@
+{% extends "index.html" %}
+
+
+
+{% block content %}
+
+    <div class="cart-container">
+        {% if items != [] %}
+            {% for item in items %}
+                    <div class="cart-body">
+                        <div class="cart-title">
+                            {{ item.title }}
+                        </div>
+                        <div class="cart-description">
+                            {{ item.description }}
+                        </div>
+                        <div class="cart-price">
+                            {{ item.price }}$
+                        </div>
+                            <button class="cart-remove" type="button" 
+                            {% for item_id in items_id %}
+                                onclick="remove_cart('{{ item_id.id }}')"
+                            {% endfor %}
+                            >Törlés</button>
+                    </div>
+            {% endfor %}
+        {% else %}
+            <h2 style="display: flex; flex-direction: column; align-items: center;">Jelenleg a kosarad üres!</h2>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='JS/cart.js') }}"></script>
+{% endblock content %}
