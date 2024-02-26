@@ -31,7 +31,7 @@ function deleteCart(itemID) {
     let userconfirm = confirm("Biztosan szeretnéd törölni az elemet?");
 
     if (userconfirm) {
-        fetch("api/remove_shop", {
+        fetch("/api/remove_shop", {
             method: "POST", 
             headers: {
                 "Content-Type": "application/json"

@@ -91,8 +91,7 @@ def shop_upload():
 def my_items():
     
 
-
-    return render_template("my_items.html", title="Feltöltéseim")
+    return render_template("my_items.html", title="Feltöltéseim", items=current_user.uploads)
 
 @app.route("/cart", methods=["GET", "POST"])
 @login_required
@@ -151,15 +150,20 @@ def remove_shop():
 
     if data:
         item_id = data.get("itemID")
-
-        if (current_user.admin):
-            item = WebShopElements.query.get_or_404(int(item_id))
+        item = WebShopElements.query.get_or_404(int(item_id))
+        if item.uploader_id != current_user.id:
+            if (current_user.admin):
+                db.session.delete(item)
+                db.session.commit()
+                flash("Az objektum sikeresen törölve!", "success")
+                return jsonify({"success": True})
+            else:
+                return jsonify({"success": False, "code": "403"})
+        else:
             db.session.delete(item)
             db.session.commit()
             flash("Az objektum sikeresen törölve!", "success")
             return jsonify({"success": True})
-        else:
-            return jsonify({"success": False, "code": "403"})
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():

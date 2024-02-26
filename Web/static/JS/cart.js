@@ -1,8 +1,4 @@
 
-
-
-
-
 function remove_cart(itemID) {
     console.log(itemID)
     fetch("api/remove_cart", {
