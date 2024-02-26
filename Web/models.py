@@ -11,13 +11,14 @@ def load_user(id):
 class User(db.Model, UserMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), nullable=False)
-    email = db.Column(db.String(30), nullable=False)
+    username = db.Column(db.String(30), nullable=False, unique=True)
+    email = db.Column(db.String(30), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
     logged = db.Column(db.Boolean)
     admin = db.Column(db.Boolean)
     uploads = db.relationship("WebShopElements", backref="uploader", lazy=True)
     cart = db.relationship("Carts", backref="user_cart", lazy=True)
+    notification = db.relationship("NotificationMessage", backref="notification", lazy=True)
 
 
 
@@ -38,3 +39,12 @@ class Carts(db.Model):
    id = db.Column(db.Integer, primary_key=True)
    itemID = db.Column(db.Integer, db.ForeignKey("shopelements.id"), nullable=False)
    cartOwnerID = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+
+
+class NotificationMessage(db.Model):
+    __tablename__ = "Notification_Messages"
+    id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    message = db.Column(db.String(100), nullable=False)
+    read = db.Column(db.Boolean)

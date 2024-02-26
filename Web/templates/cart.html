@@ -24,10 +24,18 @@
                             >Törlés</button>
                     </div>
             {% endfor %}
+            
+            
         {% else %}
             <h2 style="display: flex; flex-direction: column; align-items: center;">Jelenleg a kosarad üres!</h2>
         {% endif %}
     </div>
+    {% if items != [] %}
+        <div class="cart-all-price">
+            {{ price }}$
+        </div>
+        <button class="cart-order" type="button">Megrendelés</button>
+    {% endif %}
 
     <script src="{{ url_for('static', filename='JS/cart.js') }}"></script>
 {% endblock content %}

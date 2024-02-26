@@ -210,6 +210,17 @@ body {
     border-radius: 50px;
 }
 
+.shop-delete {
+    position: relative;
+    width: 6rem;
+    height: 3rem;
+    top: 4rem;
+    left: 4rem;
+    font-size: 22px;
+    background-color: red;
+    border-radius: 50px;
+}
+
 .cart-container {
     display: flex;
     flex-direction: column;
@@ -222,6 +233,7 @@ body {
     left: 22rem;
     overflow: auto;
     border-radius: 10px;
+    z-index: 0;
 }
 
 .cart-container::-webkit-scrollbar {
@@ -251,7 +263,7 @@ body {
 
 .cart-description {
     position: absolute;
-    left: 12rem;
+    left: 14rem;
     font-size: 24px;
     width: 36rem;
     overflow: hidden;
@@ -274,6 +286,27 @@ body {
 
 .cart-remove:hover {
     opacity: .6;
+}
+
+.cart-order {
+    position: relative;
+    top: 6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 32px;
+    background-color: greenyellow;
+    border-radius: 15px;
+}
+
+.cart-order:hover {
+    opacity: .8;
+}
+
+.cart-all-price {
+    position: absolute;
+    top: 90%;
+    left: 75%;
+    font-size: 28px;
 }
 
 
@@ -391,5 +424,16 @@ body {
         font-size: 20px;
         top: 4rem;
         left: 19rem;
+    }
+
+    .cart-order {
+        position: absolute;
+        top: calc(4rem - 5px);
+        font-size: 22px;
+    }
+
+    .cart-all-price {
+        top: calc(4rem - 5px);
+        left: 80%;
     }
 }

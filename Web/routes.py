@@ -67,7 +67,6 @@ def login():
 def shop():
     
     items = db.session.execute(db.select(WebShopElements)).scalars()
-
     return render_template("shop.html", title="WebShop", items=items)
 
 
@@ -84,23 +83,30 @@ def shop_upload():
         item = WebShopElements(uploader_id=current_user.id, title=form.title.data, description=form.description.data, price=form.price.data, image_file=filename, date=time)
         db.session.add(item)
         db.session.commit()
-        flash("Sikeres feltöltés!")
+        flash("Sikeres feltöltés!", "success")
         return redirect(url_for('home'))
     return render_template('shop_upload.html', title="Feltöltés", form=form)
 
+@app.route("/shop/my", methods=["GET", "POST"])
+def my_items():
+    
 
+
+    return render_template("my_items.html", title="Feltöltéseim")
 
 @app.route("/cart", methods=["GET", "POST"])
 @login_required
 def cart():
     cart_items = Carts.query.filter_by(cartOwnerID=current_user.id).all()
     items = []
+    price = 0
     for cart_item in cart_items:
         webshop_element = WebShopElements.query.get(cart_item.itemID)
         if webshop_element:
             items.append(webshop_element)
+            price += webshop_element.price
 
-    return render_template("cart.html", title="Kosaram", items=items, items_id=cart_items)
+    return render_template("cart.html", title="Kosaram", items=items, items_id=cart_items, price=price)
 
 
 
@@ -138,6 +144,22 @@ def remove_cart():
             return jsonify({"success": False})
     else:
         return jsonify({"success": False})
+    
+@app.route("/api/remove_shop", methods=["GET", "POST"])
+def remove_shop():
+    data = request.get_json()
+
+    if data:
+        item_id = data.get("itemID")
+
+        if (current_user.admin):
+            item = WebShopElements.query.get_or_404(int(item_id))
+            db.session.delete(item)
+            db.session.commit()
+            flash("Az objektum sikeresen törölve!", "success")
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False, "code": "403"})
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():

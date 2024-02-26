@@ -13,6 +13,9 @@
                     <li class="shop-item">{{ item.price }}$</li>
                 </ul>
                 <button class="shop-cart" type="button" onclick="addCart('{{ item.id }}')">Kosárba</button>
+                {% if current_user.admin %}
+                    <button class="shop-delete" type="button" onclick="deleteCart('{{ item.id }}')">Törlés</button>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
