@@ -4,6 +4,10 @@ body {
     background-color: #e8e8a5;
 }
 
+body::-webkit-scrollbar {
+    width: 0;
+}
+
 .logout:hover {
     background-color: red;
     opacity: 0.8;
@@ -309,6 +313,58 @@ body {
     font-size: 28px;
 }
 
+
+.profile-container {
+    position: relative;
+    width: 90%;
+    height: 12rem;
+    background-color: gray;
+    top: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+.profile-name {
+    position: relative;
+    width: 30%;
+    font-size: 32px;
+    top: 1rem;
+    left: 12rem;
+}
+
+.profile-about {
+    position: relative;
+    width: 30%;
+    height: 8rem;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    overflow-y: scroll;
+    font-size: 24px;
+    left: 12rem;
+}
+
+.profile-about::-webkit-scrollbar {
+    width: 0;
+}
+
+.profile-about-edit {
+    position: relative;
+    width: 1rem;
+    top: -3rem;
+    left: 46rem;
+    font-size: 28px;
+    user-select: none;
+}
+
+.profile-edit {
+    width: 100%;
+    height: 100%;
+}
+
+.profile-edit::-webkit-scrollbar {
+    width: 0;
+}
 
 @media screen and (max-width: 600px) {
     .panel-container {

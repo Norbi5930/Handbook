@@ -36,12 +36,9 @@
                       <li><a class="dropdown-item" href="{{ url_for('register') }}">Regisztráció</a></li>
                       <li><a class="dropdown-item" href="{{ url_for('login') }}">Bejelentkezés</a></li>
                     {% else %}
-                      <li><a class="dropdown-item" href="">Profilom</a></li>
+                      <li><a class="dropdown-item" href="{{ url_for('my_profil') }}">Profilom</a></li>
                       <li><a class="dropdown-item" href="">Barátlista</a></li>
                       <li><a class="dropdown-item" href="{{ url_for('shop_upload') }}">WebShop feltöltés</a></li>
-                      {% if current_user.uploads %}
-                        <li><a class="dropdown-item" href="{{ url_for('my_items') }}">Feltöltéseim</a></li>
-                      {% endif %}
                       <li><a class="dropdown-item" href="{{ url_for('cart') }}">Kosaram</a></li>
                       <li>
                         <hr class="dropdown-divider">

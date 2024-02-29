@@ -50,7 +50,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
 
         if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=False)
+            login_user(user, remember=True)
             user.logged = True
             db.session.commit()
             flash("Sikeres bejelentkezés!", "success")
@@ -87,11 +87,10 @@ def shop_upload():
         return redirect(url_for('home'))
     return render_template('shop_upload.html', title="Feltöltés", form=form)
 
-@app.route("/shop/my", methods=["GET", "POST"])
-def my_items():
-    
 
-    return render_template("my_items.html", title="Feltöltéseim", items=current_user.uploads)
+@app.route("/my_profile", methods=["GET", "POST"])
+def my_profil():
+    return render_template("my_profile.html", title="Profilom", items=current_user.uploads)
 
 @app.route("/cart", methods=["GET", "POST"])
 @login_required
@@ -107,6 +106,13 @@ def cart():
 
     return render_template("cart.html", title="Kosaram", items=items, items_id=cart_items, price=price)
 
+
+@app.route("/<name>", methods=["GET", "POST"])
+def profile(name):
+    user = User.query.filter_by(username=name).first()
+
+
+    return render_template("profile.html", title=f"{name}", user=user, items=user.uploads)
 
 
 @app.route("/api/add_cart", methods=["GET", "POST"])
@@ -164,6 +170,23 @@ def remove_shop():
             db.session.commit()
             flash("Az objektum sikeresen törölve!", "success")
             return jsonify({"success": True})
+        
+@app.route("/api/edit_about", methods=["GET", "POST"])
+def edit_about():
+    data = request.get_json()
+    content = data.get("content")
+
+    if content:
+        try:
+            current_user.about = str(content)
+            db.session.commit()
+            return jsonify({"success": True})
+        except:
+            flash("Sikertelen szerkesztés! Kérlek próbáld újra később!", "danger")
+            return jsonify({"success": False})
+
+    return jsonify({"success": False})
+
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():

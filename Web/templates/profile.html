@@ -1,6 +1,21 @@
 {% extends "index.html" %}
 
+
+
 {% block content %}
+    <div class="profile-container">
+        <div class="profile-name">
+            <p>{{ user.username }}</p>
+        </div>
+        <div class="profile-about">
+            {% if user.about == None %}
+            <p id="aboutMe">A felhasználó még nem mutatkozott be!</p>
+            {% else %}
+                <p id="aboutMe">{{ user.about }}</p>
+            {% endif %}
+        </div>  
+    </div>  
+
     <div class="shop-container">
         {% for item in items %}
             <div class="shop-body">
@@ -13,10 +28,7 @@
                     <li class="shop-item">{{ item.price }}$</li>
                 </ul>
                 {% if current_user.id != item.uploader_id %}
-                    <button class="shop-cart" type="button" onclick="addCart('{{ item.id }}')">Kosárba</button>
-                {% endif %}
-                {% if current_user.admin %}
-                    <button class="shop-delete" type="button" onclick="deleteCart('{{ item.id }}')">Törlés</button>
+                    <button class="shop-cart" type="button" onclick="addCart('{{ item.id }}')">Vásárlás</button>
                 {% endif %}
             </div>
         {% endfor %}
