@@ -36,8 +36,14 @@ class LoginForm(FlaskForm):
 
 
 class ShopUploadForm(FlaskForm):
-    file = FileField("Fájl", validators=[DataRequired(), FileAllowed(["jpg", "png"], "Csak képeket tölthetsz fel!")])
+    file = FileField("Fájl", validators=[DataRequired(), FileAllowed(["jpg", "png"], "Csak képeket tölthetsz fel! (JPG, PNG)")])
     title = StringField(render_kw={"placeholder": "Megnevezés"}, validators=[DataRequired(), Length(max=50)])
     description = TextAreaField(render_kw={"placeholder": "Leírás"}, validators=[Length(max=200)])
     price = IntegerField(render_kw={"placeholder": "Ár"})
     submit = SubmitField("Feltöltés")
+
+
+
+class EditProfilePictureForm(FlaskForm):
+    file = FileField("Fájl", validators=[DataRequired(), FileAllowed(["jpg", "png"], "Csak képeket tölthetsz fel! (JPG, PNG)")])
+    submit = SubmitField("Mentés")

@@ -12,3 +12,16 @@ document.getElementById("file").addEventListener("change", function(event) {
 
     reader.readAsDataURL(file);
 })
+
+
+document.getElementById("editFile").addEventListener("change", function(event) {
+    let file = event.target.files[0];
+    let reader = new FileReader();
+
+    reader.onload = function(event) {
+        var img = document.getElementById("editProfilePicture");
+        img.src = event.target.result;
+    };
+
+    reader.readAsDataURL(file);
+});

@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+
+
+
+{% block content %}
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="edit-container">
+            <div class="edit-file">
+                {{ form.file(id="editFile") }}
+            </div>
+            <div>
+                {% if current_user.picture %}
+                    <img id="editProfilePicture" src="{{ url_for('static', filename='profile_images/' + current_user.picture) }}" alt="picture">
+                {% else %}
+                    <img id="editProfilePicture" src="{{ url_for('static', filename='profile_images/default/default.jpg') }}" alt="picture">
+                {% endif %}
+            </div>
+            {% if current_user.picture %}
+                <div>
+                    <button type="button" id="deleteImage">Törlés</button>
+                </div>
+            {% endif %}
+            <div class="edit-submit">
+                {{ form.submit() }}
+            </div>
+        </div>
+    </form>
+
+    <script src="{{ url_for('static', filename='JS/editprofile.js') }}"></script>
+{% endblock content %}

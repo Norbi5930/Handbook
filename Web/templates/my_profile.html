@@ -4,6 +4,11 @@
 {% block content %}
 
     <div class="profile-container">
+        {% if current_user.picture %}
+            <img id="profilePicture" src="{{ url_for('static', filename='profile_images/' + current_user.picture) }}" alt="profilePicture">
+        {% else %}
+            <img id="profilePicture" src="{{ url_for('static', filename='profile_images/default/default.jpg') }}" alt="profilePicture">
+        {% endif %}
         <div class="profile-name">
             <p>{{ current_user.username }}</p>
         </div>

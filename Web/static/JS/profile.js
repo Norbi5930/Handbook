@@ -10,7 +10,7 @@ editButton.addEventListener("click", function() {
         textarea.parentNode.replaceChild(aboutMe, textarea);
         if (confirm("Biztosan megszeretnéd változtatni?")) {
             aboutMe.innerHTML = textarea.value;
-            edit_about(textarea.value);
+            editAbout(textarea.value);
         }
     } else {
         edit = true;
@@ -23,7 +23,7 @@ editButton.addEventListener("click", function() {
 
 
 
-function edit_about(content) {
+function editAbout(content) {
     fetch("/api/edit_about", {
         method: "POST",
         headers: {
@@ -40,5 +40,11 @@ function edit_about(content) {
         } else {
             window.location.reload();
         }
-    })
-}
+    });
+};
+
+
+
+document.getElementById("profilePicture").addEventListener("click", function() {
+    window.location.href = "http://192.168.1.2:5000/my_profile/edit";
+})

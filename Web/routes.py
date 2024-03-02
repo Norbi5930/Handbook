@@ -7,7 +7,7 @@ from random import randint
 
 from Web import app, db, bcrypt
 from .models import User, WebShopElements, Carts
-from .forms import RegisterForm, LoginForm, ShopUploadForm
+from .forms import RegisterForm, LoginForm, ShopUploadForm, EditProfilePictureForm
 
 
 with app.app_context():
@@ -89,8 +89,24 @@ def shop_upload():
 
 
 @app.route("/my_profile", methods=["GET", "POST"])
-def my_profil():
+def my_profile():
     return render_template("my_profile.html", title="Profilom", items=current_user.uploads)
+
+
+@app.route("/my_profile/edit", methods=["GET", "POST"])
+def edit_proife():
+    form = EditProfilePictureForm()
+
+    if form.validate_on_submit():
+        file = form.file.data
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config["PROFILE_PICTURE_UPLOAD_FOLDER"], filename)
+        file.save(file_path)
+        current_user.picture = filename
+        db.session.commit()
+        return redirect(url_for('my_profile'))
+
+    return render_template("edit_profile.html", title="Szerkesztés", form=form)
 
 @app.route("/cart", methods=["GET", "POST"])
 @login_required
@@ -112,7 +128,7 @@ def profile(name):
     user = User.query.filter_by(username=name).first()
 
 
-    return render_template("profile.html", title=f"{name}", user=user, items=user.uploads)
+    return render_template("profile.html", title=f"{name}", user=user, items=user.uploads) if user else render_template("index.html", title="Kezdőlap")
 
 
 @app.route("/api/add_cart", methods=["GET", "POST"])
@@ -185,6 +201,17 @@ def edit_about():
             flash("Sikertelen szerkesztés! Kérlek próbáld újra később!", "danger")
             return jsonify({"success": False})
 
+    return jsonify({"success": False})
+
+@app.route("/api/delete_image", methods=["GET", "POST"])
+def delete_profile_image():
+    data = request.get_json()
+
+
+    if current_user.picture:
+        current_user.picture = None
+        db.session.commit()
+        return jsonify({"success": True})
     return jsonify({"success": False})
 
 

@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     logged = db.Column(db.Boolean)
     admin = db.Column(db.Boolean)
     about = db.Column(db.String(300))
+    picture = db.Column(db.String(100))
     uploads = db.relationship("WebShopElements", backref="uploader", lazy=True)
     cart = db.relationship("Carts", backref="user_cart", lazy=True)
     notification = db.relationship("NotificationMessage", backref="notification", lazy=True)
