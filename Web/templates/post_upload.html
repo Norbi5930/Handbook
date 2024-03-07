@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+
+
+
+
+{% block content %}
+    <form id="uploadPostForm" action="" method="post">
+        {{ form.hidden_tag() }}
+        <div class="upload-post-container">
+            <h2 class="upload-post-container-title">Feltöltő felület</h2>
+            <div class="upload-post-body">
+                <div class="upload-post-title-frame">
+                    {{ form.title(class="upload-post-title", id="title") }}
+                </div>
+                <div class="upload-post-description-frame">
+                    {{ form.description(class="upload-post-description", id="description")}}
+                </div>
+                <div class="upload-post-file-frame">
+                    {{ form.picture(class="upload-post-file", id="file") }}
+                </div>
+                <img src="" alt="picture" id="Img">
+                <div class="upload-post-button-frame">
+                    {{ form.submit(class="upload-post-button", id="button") }}
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script src="{{ url_for('static', filename='JS/uploadpost.js')}}"></script>
+{% endblock content %}

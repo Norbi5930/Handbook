@@ -7,7 +7,7 @@ from random import randint
 
 from Web import app, db, bcrypt
 from .models import User, WebShopElements, Carts
-from .forms import RegisterForm, LoginForm, ShopUploadForm, EditProfilePictureForm
+from .forms import RegisterForm, LoginForm, ShopUploadForm, EditProfilePictureForm, UploadPostForm
 
 
 with app.app_context():
@@ -80,12 +80,19 @@ def shop_upload():
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        item = WebShopElements(uploader_id=current_user.id, title=form.title.data, description=form.description.data, price=form.price.data, image_file=filename, date=time)
+        item = WebShopElements(uploader_id=current_user.id, uploader_name=current_user.username, title=form.title.data, description=form.description.data, price=form.price.data, image_file=filename, date=time)
         db.session.add(item)
         db.session.commit()
         flash("Sikeres feltöltés!", "success")
         return redirect(url_for('home'))
     return render_template('shop_upload.html', title="Feltöltés", form=form)
+
+@app.route("/post/upload", methods=["GET", "POST"])
+def post_upload():
+    form = UploadPostForm()
+
+
+    return render_template("post_upload.html", title="Feltöltés", form=form)
 
 
 @app.route("/my_profile", methods=["GET", "POST"])
@@ -214,6 +221,23 @@ def delete_profile_image():
         return jsonify({"success": True})
     return jsonify({"success": False})
 
+
+@app.route("/api/change_email", methods=["GET", "POST"])
+def change_email():
+    data = request.get_json()
+    email = data.get("email")
+
+    if email:
+        valide = User.query.filter_by(email=email).all()
+        print(valide)
+        if not valide:
+            current_user.email = str(email)
+            db.session.commit()
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False, "errorMessage": "Az e-mail cím már foglalt!"})
+    else:
+        jsonify({"success": False})
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():

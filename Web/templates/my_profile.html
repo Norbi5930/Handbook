@@ -20,7 +20,36 @@
             {% endif %}
         </div>
         <p class="profile-about-edit" type="button" id="profileEdit">🛠</p>
+        <p class="profile-settings" type="button" id="profileSettings" data-bs-toggle="modal" data-bs-target="#settingsModal">⚙</p>
+
+
+        <a class="profile-post-upload" href="{{ url_for('post_upload')}}">Post feltöltés</a>
+        <a class="profile-shop-upload" href="{{ url_for('shop_upload') }}">WebShop feltöltés</a>
     </div>
+
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">E-mail cím megváltoztatása</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                A jelenlegi e-mail címe: {{ current_user.email }}
+              <form>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label">Új e-mail cím:</label>
+                  <input type="text" class="form-control" id="settingsEmail">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Bezárás</button>
+              <button type="button" class="btn btn-primary" id="setttingsChangeButton">Megváltoztatás</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
     
@@ -35,8 +64,22 @@
                 <ul class="shop-list">
                     <li class="shop-item">{{ item.price }}$</li>
                 </ul>
-                <button class="shop-delete" type="button" onclick="deleteCart('{{ item.id }}')">Törlés</button>
+                <button class="shop-delete" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">Törlés</button>
             </div>
+            <div class="modal" tabindex="-1" id="deleteModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Biztosan szeretnéd törölni az elemet?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+                      <button type="button" class="btn btn-danger" onclick="deleteCart('{{ item.id }}')">Törlés</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
         {% endfor %}
     </div>
 
@@ -46,3 +89,9 @@
 
     <script src="{{ url_for('static', filename='JS/profile.js') }}"></script>
 {% endblock content %}
+
+
+{% block modal %}
+    
+
+{% endblock modal %}

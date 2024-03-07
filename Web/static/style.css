@@ -51,7 +51,17 @@ body::-webkit-scrollbar {
 }
 
 .username:focus, .email:focus, .password:focus, .password_confirm:focus {
-    box-shadow: 0 0 30px rgb(0, 200, 0);
+    animation: register 0.5s forwards;
+}
+
+@keyframes register{
+    0% {
+        box-shadow: 0 0 0px rgb(0, 200, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 50px rgb(0, 200, 0);
+    }
 }
 
 .button-block {
@@ -158,20 +168,42 @@ body::-webkit-scrollbar {
     width: 99%;
 }
 
+@keyframes open-shop {
+    0% {
+        width: 0;
+        height: 0;
+        margin: 0 0 0 0;
+    }
+
+    100% {
+        width: 18rem;
+        height: 32rem;
+        margin: 1rem 0 1rem 1rem;
+    }
+}
+
 .shop-body {
-    width: 18rem;
-    height: 32rem;
-    margin: 1rem 0 1rem 1rem;
+    animation: open-shop 2s forwards;
     background-color: gray;
     overflow-y: auto;
     position: relative;
+    border-radius: 10px;
 }
 
 .shop-body::-webkit-scrollbar {
     width: 0;
 }
 
+.shop-name {
+    position: relative;
+    text-decoration: none;
+    color: black;
+    font-size: 24px;
+    left: 1rem;
+}
+
 #shop-image {
+    position: relative;
     max-width: 100%;
     max-height: 12rem;
     width: 18rem;
@@ -219,7 +251,7 @@ body::-webkit-scrollbar {
     width: 6rem;
     height: 3rem;
     top: 4rem;
-    left: 4rem;
+    left: 1rem;
     font-size: 22px;
     background-color: red;
     border-radius: 50px;
@@ -374,6 +406,12 @@ body::-webkit-scrollbar {
     user-select: none;
 }
 
+.profile-settings {
+    position: absolute;
+    top: 0;
+    font-size: 24px;
+}
+
 .profile-edit {
     width: 100%;
     height: 100%;
@@ -381,6 +419,74 @@ body::-webkit-scrollbar {
 
 .profile-edit::-webkit-scrollbar {
     width: 0;
+}
+
+.profile-shop-upload {
+    position: absolute;
+    top: 6rem;
+    left: 48rem;
+    width: 12%;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #0996ed;
+    color: black;
+    margin-top: 10px;
+}
+
+
+
+.profile-shop-upload:hover {
+    opacity: .9;
+    animation: uploadButton 1.5s infinite;
+}
+
+.profile-shop-upload:active {
+    animation: activeUploadButton 0.8s forwards;
+}
+
+@keyframes uploadButton {
+    0%, 100% {
+        box-shadow: 0 0 5px rgb(0, 0, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgb(0, 0, 0);
+    }
+}
+
+@keyframes activeUploadButton {
+    0% {
+        box-shadow: 0 0 0px rgb(10, 127, 199);
+    }
+
+    100% {
+        box-shadow: 0 0 50px rgb(10, 127, 199);
+    }
+}
+
+
+.profile-post-upload {
+    position: absolute;
+    left: 48rem;
+    top: 4rem;
+    width: 12%;
+    background-color: #20618a;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.profile-post-upload:hover {
+    opacity: .9;
+    animation: uploadButton 1.5s infinite;
+}
+
+.profile-post-upload:active {
+    animation: activeUploadButton 0.8s forwards;
 }
 
 .edit-container {
@@ -400,16 +506,18 @@ body::-webkit-scrollbar {
 }
 
 .edit-submit {
-    position: relative;
+    position: absolute;
     text-align: center;
     font-size: 24px;
     bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 #deleteImage {
-    position: relative;
+    position: absolute;
     font-size: 24px;
-    top: calc(2rem - 5px);
+    top: calc(12rem + 8px);
     left: 20rem;
     z-index: 1;
     background-color: red;
@@ -429,7 +537,242 @@ body::-webkit-scrollbar {
     border-radius: 50%;
 }
 
+@keyframes deleteButton {
+    0% {
+        box-shadow: 0 0 0px red;
+    }
 
+    100% {
+        box-shadow: 0 0 30px red;
+    }
+}
+
+@keyframes purchaseButton {
+    0% {
+        box-shadow: 0 0 0px greenyellow;
+    }
+
+    100% {
+        box-shadow: 0 0 30px greenyellow;
+    }
+}
+
+.cart-remove:hover, .shop-delete:hover, #deleteImage:hover {
+    animation: deleteButton 0.8s forwards;
+}
+
+.cart-order:hover, .shop-cart:hover {
+    animation: purchaseButton 0.8s forwards;
+}
+
+
+.upload-post-container {
+    position: relative;
+    top: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 48rem;
+}
+
+@keyframes upload-title {
+    0% {
+        left: 0rem;
+    }
+
+    100% {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.upload-post-container-title {
+    position: absolute;
+    animation: upload-title 1.5s forwards;
+    user-select: none;
+}
+
+@keyframes start-line {
+    0% {
+        
+    }
+
+    100% {
+        
+    }
+}
+
+@keyframes draw-body {
+    0% {
+        width: 0;
+        height: 32rem;
+        border-top-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        border-bottom-width: 0px;
+    }
+
+    25% {
+        height: 32rem;
+        
+    }
+
+    50% {
+        width: 40%;
+    }
+
+    100% {
+        border-top-width: 7px;
+        border-left-width: 7px;
+        border-right-width: 7px;
+        border-bottom-width: 7px;
+    }
+}
+
+.upload-post-body {
+    position: relative;
+    width: 40%;
+    height: 32rem;
+    background-color: white;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10%;
+    border-style: double;
+    border-color: #0996ed;
+    border-width: 0px;
+    animation: draw-body 4s forwards;
+}
+
+@keyframes post-title-frame {
+    0% {
+        top: 0;
+    }
+
+    100% {
+        top: 2rem;
+    }
+}
+
+@keyframes post-title {
+    0% {
+        width: 0;   
+    }
+
+    100% {
+        width: 80%;
+    }
+}
+
+.upload-post-title-frame {
+    position: relative;
+    left: 4rem;
+    animation: post-title-frame 0.8s forwards;
+}
+
+.upload-post-title {
+    animation: post-title 2s forwards;
+    border-radius: 10px;
+}
+
+@keyframes post-description-frame {
+    0% {
+        top: 0;
+    }
+
+    100% {
+        top: 2rem;
+        margin-top: 10px;
+    }
+}
+
+.upload-post-description-frame {
+    position: relative;
+    animation: post-description-frame 1.5s forwards;
+    left: 4rem;
+}
+
+@keyframes post-description {
+    0% {
+        width: 0;
+        height: 0;
+    }
+
+    100% {
+        width: 80%;
+        height: 6rem;
+    }
+}
+
+.upload-post-description {
+    animation: post-description 1.8s forwards;
+    resize: none;
+    border-radius: 10px;
+}
+
+
+.upload-post-title::placeholder, .upload-post-description::placeholder {
+    font-size: 20px;
+}
+
+@keyframes post-file-frame {
+    0% {
+        top: 0;
+    }
+
+    100% {
+        top: 2rem;
+    }
+}
+
+.upload-post-file-frame {
+    position: relative;
+    animation: post-file-frame 2.2s forwards;
+    left: 4rem;
+}
+
+@keyframes post-image {
+    0% {
+        max-width: 0;
+        max-height: 0;
+    }
+
+    100% {
+        max-width: 90%;
+        max-height: 280px;
+    }
+}
+
+#Img {
+    position: relative;
+    display: none;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 280px;
+    animation: post-image 3s forwards;
+}
+
+.upload-post-button-frame {
+    position: absolute;
+    top: -4rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+.upload-post-button {
+    display: none;
+    font-size: 24px;
+    width: 200px;
+    border-radius: 10px;
+    background-color: #33a6f2;
+}
+
+.upload-post-button:hover {
+    opacity: .8;
+}
 
 @media screen and (max-width: 600px) {
     .panel-container {
@@ -558,6 +901,14 @@ body::-webkit-scrollbar {
         left: 80%;
     }
 
+    .profile-container {
+        height: 16rem;
+    }
+
+    #profilePicture {
+        top: 6rem;
+    }
+
     .profile-about-edit {
         left: 11rem;
     }
@@ -570,7 +921,126 @@ body::-webkit-scrollbar {
         font-size: 14px;
     }
 
+    .profile-shop-upload {
+        top: 12rem;
+        left: 14rem;
+        font-size: 16px;
+        width: 30%;
+        margin-top: 0;
+    }
+
+    .profile-post-upload {
+        top: 12rem;
+        left: 9rem;
+        font-size: 16px;
+        width: 20%;
+    }
+
     .edit-file {
         font-size: 14px;
+    }
+
+    .edit-submit {
+        position: absolute;
+        text-align: center;
+        font-size: 24px;
+        bottom: 1rem;
+        left: 9rem;
+    }
+
+    #deleteImage {
+        position: absolute;
+        font-size: 24px;
+        top: calc(12rem + 8px);
+        left: 0rem;
+        z-index: 1;
+        background-color: red;   
+    }
+
+    .upload-post-container {
+        height: 32rem;
+    }
+
+    @keyframes draw-body {
+        0% {
+            width: 0;
+            height: 32rem;
+            border-top-width: 0px;
+            border-left-width: 0px;
+            border-right-width: 0px;
+            border-bottom-width: 0px;
+        }
+    
+        25% {
+            height: 24rem;
+            
+        }
+    
+        50% {
+            width: 80%;
+        }
+    
+        100% {
+            border-top-width: 5px;
+            border-left-width: 5px;
+            border-right-width: 5px;
+            border-bottom-width: 5px;
+        }
+    }
+
+    .upload-post-body {
+        width: 80%;
+        height: 24rem;
+        animation: draw-body 4s forwards;
+    }
+
+    @keyframes post-title {
+        0% {
+            width: 0;
+        }
+
+        100% {
+            width: 90%;
+        }
+    }
+
+    @keyframes post-description {
+        0% {
+            width: 0;
+        }
+
+        100% {
+            width: 90%;
+            height: 6rem;
+        }
+    }
+
+    .upload-post-title-frame {
+        left: 1rem;
+    }
+
+    .upload-post-title {
+        font-size: 18px;
+    }
+
+    .upload-post-description-frame {
+        left: 1rem;
+    }
+
+    .upload-post-description {
+        font-size: 14px;
+    }
+
+    .upload-post-title::placeholder, .upload-post-description::placeholder {
+        font-size: 16px;
+    }
+
+    .upload-post-file-frame {
+        left: 1rem;
+    }
+
+    #Img {
+        height: 150px;
+        max-height: 150px;
     }
 }

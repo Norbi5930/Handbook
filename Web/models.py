@@ -29,6 +29,7 @@ class WebShopElements(db.Model):
     __tablename__ = "shopelements"
     id = db.Column(db.Integer, primary_key=True)
     uploader_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    uploader_name = db.Column(db.String(30), nullable=False)
     title = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(200))
     price = db.Column(db.Integer, nullable=False)

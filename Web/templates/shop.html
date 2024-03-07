@@ -4,6 +4,7 @@
     <div class="shop-container">
         {% for item in items %}
             <div class="shop-body">
+                <a class="shop-name" href="{{ url_for('profile', name=item.uploader_name) }}">{{ item.uploader_name }}</a>
                 {% if item.image_file %}
                     <img id="shop-image" src="{{ url_for('static', filename='images/' + item.image_file) }}" alt="Image">
                 {% endif %}
