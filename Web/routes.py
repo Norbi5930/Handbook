@@ -226,16 +226,18 @@ def delete_profile_image():
 def change_email():
     data = request.get_json()
     email = data.get("email")
-
     if email:
-        valide = User.query.filter_by(email=email).all()
-        print(valide)
-        if not valide:
-            current_user.email = str(email)
-            db.session.commit()
-            return jsonify({"success": True})
+        if not email == current_user.email:
+            valide = User.query.filter_by(email=email).all()
+           
+            if not valide:
+                current_user.email = str(email)
+                db.session.commit()
+                return jsonify({"success": True})
+            else:
+                return jsonify({"success": False, "errorMessage": "Az e-mail cím már foglalt!"})
         else:
-            return jsonify({"success": False, "errorMessage": "Az e-mail cím már foglalt!"})
+            return jsonify({"success": False, "errorMessage": "Jelenleg ez az e-mail címe!"})
     else:
         jsonify({"success": False})
 
