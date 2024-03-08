@@ -446,6 +446,8 @@ body::-webkit-scrollbar {
     animation: activeUploadButton 0.8s forwards;
 }
 
+
+
 @keyframes uploadButton {
     0%, 100% {
         box-shadow: 0 0 5px rgb(0, 0, 0);
@@ -774,6 +776,73 @@ body::-webkit-scrollbar {
     opacity: .8;
 }
 
+
+.posts-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    top: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 54rem;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.posts-container::-webkit-scrollbar {
+    width: 0;
+}
+
+.posts-body {
+    position: relative;
+    margin: 1rem 0 1rem 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    background-color: white;
+    border-radius: 10px;
+    border-style: double;
+    border-color: #0996ed;
+    border-width: 7px;
+}
+
+#postProfilePicture {
+    position: relative;
+    top: .5rem;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.posts-uploader {
+    position: relative;
+    top: -1rem;
+    left: 2rem;
+    font-size: 18px;
+    text-decoration: none;
+    color: black;
+}
+
+.posts-title {
+    position: relative;
+    top: -1rem;
+    left: 1rem;
+    font-size: 22px;
+}
+
+.posts-description {
+    position: relative;
+    top: -2rem;
+    left: 1rem;
+    font-size: 14px;
+}
+
+#postPicture {
+    width: 100%;
+    height: 300px;
+}
+
 @media screen and (max-width: 600px) {
     .panel-container {
         width: 16rem;
@@ -1042,5 +1111,28 @@ body::-webkit-scrollbar {
     #Img {
         height: 150px;
         max-height: 150px;
+    }
+
+    .posts-container {
+        height: 32rem;
+    }
+
+    .posts-container {
+        width: 90%;
+    }
+
+    .posts-uploader {
+        font-size: 16px;
+    }
+
+    .posts-title {
+        font-size: 20px;
+        top: -.5rem;
+    }
+
+    .posts-description {
+        top: -1rem;
+        font-size: 14px;
+        margin-right: 10px;
     }
 }

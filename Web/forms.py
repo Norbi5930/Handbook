@@ -44,8 +44,8 @@ class ShopUploadForm(FlaskForm):
 
 
 class UploadPostForm(FlaskForm):
-    title = StringField(render_kw={"placeholder": "Cím"}, validators=[DataRequired()])
-    description = TextAreaField(render_kw={"placeholder": "Leírás"})
+    title = StringField(render_kw={"placeholder": "Cím"}, validators=[DataRequired(), Length(max=60)])
+    description = TextAreaField(render_kw={"placeholder": "Leírás"}, validators=[Length(max=200)])
     picture = FileField("Fájl", validators=[FileAllowed(["jpg", "png", "gif"], "Csak képeket tölthetsz fel! (JPG, PNG)")])
     submit = SubmitField("Feltöltés")
 

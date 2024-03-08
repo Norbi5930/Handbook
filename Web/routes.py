@@ -6,7 +6,7 @@ import datetime
 from random import randint
 
 from Web import app, db, bcrypt
-from .models import User, WebShopElements, Carts
+from .models import User, WebShopElements, Carts, Posts
 from .forms import RegisterForm, LoginForm, ShopUploadForm, EditProfilePictureForm, UploadPostForm
 
 
@@ -70,6 +70,14 @@ def shop():
     return render_template("shop.html", title="WebShop", items=items)
 
 
+@app.route("/posts", methods=["GET", "POST"])
+def posts():
+
+    posts = db.session.execute(db.select(Posts)).scalars()
+
+    return render_template("posts.html", title="Hírfolyam", posts=posts)
+
+
 @app.route("/shop/upload", methods=["GET", "POST"])
 @login_required
 def shop_upload():
@@ -91,6 +99,20 @@ def shop_upload():
 def post_upload():
     form = UploadPostForm()
 
+    if form.validate_on_submit():
+        file = form.picture.data
+        time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        if file:
+            filename = secure_filename(file.name)
+            file_path = os.path.join(app.config["POST_PICTURE_UPLOAD_FOLDER"], filename)
+            file.save(file_path)
+            post = Posts(uploader_id=current_user.id, uploader_photo=current_user.picture, uploader_name=current_user.username, title=form.title.data, description=form.description.data, image_file=filename, date=time)
+        else:
+            post = Posts(uploader_id=current_user.id, uploader_photo=current_user.picture, uploader_name=current_user.username, title=form.title.data, description=form.description.data, date=time)
+        db.session.add(post)
+        db.session.commit()
+        flash("Sikeresen közzétéve!", "success")
+        return redirect(url_for("my_profile"))
 
     return render_template("post_upload.html", title="Feltöltés", form=form)
 
@@ -142,7 +164,6 @@ def profile(name):
 def add_cart():
     data = request.get_json()
     item_id = data.get("itemID")
-    print(item_id)
     if item_id:
         try:
             add_cart = Carts(itemID=item_id, cartOwnerID=current_user.id)

@@ -4,7 +4,7 @@
 
 
 {% block content %}
-    <form id="uploadPostForm" action="" method="post">
+    <form id="uploadPostForm" action="" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <div class="upload-post-container">
             <h2 class="upload-post-container-title">Feltöltő felület</h2>

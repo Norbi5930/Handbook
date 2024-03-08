@@ -19,6 +19,7 @@ class User(db.Model, UserMixin):
     about = db.Column(db.String(300))
     picture = db.Column(db.String(100))
     uploads = db.relationship("WebShopElements", backref="uploader", lazy=True)
+    posts = db.relationship("Posts", backref="user_posts", lazy=True)
     cart = db.relationship("Carts", backref="user_cart", lazy=True)
     notification = db.relationship("NotificationMessage", backref="notification", lazy=True)
 
@@ -37,8 +38,19 @@ class WebShopElements(db.Model):
     date = db.Column(db.String(30), nullable=False)
 
 
+class Posts(db.Model):
+    __tablename__ = "posts"
+    id = db.Column(db.Integer, primary_key=True)
+    uploader_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    uploader_photo = db.Column(db.String(100))
+    uploader_name = db.Column(db.String(30), nullable=False)
+    title = db.Column(db.String(60), nullable=False)
+    description = db.Column(db.String(200))
+    image_file = db.Column(db.String(100))
+    date = db.Column(db.String(30), nullable=False)
+
 class Carts(db.Model):
-   __tablename__ = "Carts"
+   __tablename__ = "narts"
    id = db.Column(db.Integer, primary_key=True)
    itemID = db.Column(db.Integer, db.ForeignKey("shopelements.id"), nullable=False)
    cartOwnerID = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
@@ -46,7 +58,7 @@ class Carts(db.Model):
 
 
 class NotificationMessage(db.Model):
-    __tablename__ = "Notification_Messages"
+    __tablename__ = "notification_Messages"
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     message = db.Column(db.String(100), nullable=False)
