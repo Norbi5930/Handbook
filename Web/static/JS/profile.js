@@ -81,4 +81,33 @@ settingsButton.addEventListener("click", function() {
     } else {
         alert("Nem megfelelő formátum!")
     }
-})
+});
+
+
+function deletePost(postID) {
+    console.log(postID)
+    fetch("/api/delete_post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            postID: postID
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.reload()
+        } else {
+            if (data.errorMessage) {
+                alert(data.errorMessage);
+            } else {
+                alert("A művelet nem sikerült, kérlek próbáld újra később!")
+            };
+        };
+    })
+    .catch(error => {
+        console.error("Error: ", error);
+    });
+};

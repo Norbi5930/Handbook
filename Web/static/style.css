@@ -491,6 +491,20 @@ body::-webkit-scrollbar {
     animation: activeUploadButton 0.8s forwards;
 }
 
+.profile-post-delete {
+    position: relative;
+    background-color: none;
+    border: none;
+    top: -1rem;
+    left: 38rem;
+}
+
+.post-delete {
+    color: white;
+    background-color: #f22c2c;
+}
+
+
 .edit-container {
     position: relative;
     width: 50%;
@@ -785,9 +799,6 @@ body::-webkit-scrollbar {
     left: 50%;
     transform: translateX(-50%);
     width: 50%;
-    height: 54rem;
-    overflow: hidden;
-    overflow-y: auto;
 }
 
 .posts-container::-webkit-scrollbar {
@@ -802,9 +813,9 @@ body::-webkit-scrollbar {
     width: 70%;
     background-color: white;
     border-radius: 10px;
-    border-style: double;
+    border-style: solid;
     border-color: #0996ed;
-    border-width: 7px;
+    border-width: 3px;
 }
 
 #postProfilePicture {
@@ -1111,10 +1122,6 @@ body::-webkit-scrollbar {
     #Img {
         height: 150px;
         max-height: 150px;
-    }
-
-    .posts-container {
-        height: 32rem;
     }
 
     .posts-container {
