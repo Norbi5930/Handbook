@@ -18,7 +18,12 @@
             {% else %}
                 <p id="aboutMe">{{ user.about }}</p>
             {% endif %}
-        </div>  
+        </div>
+        {% if current_user.is_authenticated and current_user.id != user.id %}
+            <div>
+                <button type="button" class="profile-friend-button" id="requestButton" onclick="friendRequest('{{ user.id }}')">Barát kérelem</button>
+            </div>
+        {% endif %}
     </div>  
 
     <div class="shop-container">
@@ -38,6 +43,29 @@
             </div>
         {% endfor %}
     </div>
+    <div class="posts-container">
+        {% for post in posts %}
+            <div class="posts-body">
+                {% if post.uploader_photo %}
+                    <img src="{{ url_for('static', filename='profile_images/' + post.uploader_photo) }}" alt="profilePicture" id="postProfilePicture">
+                {% else %}
+                    <img src="{{ url_for('static', filename='profile_images/default/default.jpg') }}" alt="profilePicture" id="postProfilePicture">
+                {% endif %}
+                <div>
+                    <a class="posts-uploader" href="{{ url_for('profile', name=post.uploader_name) }}">{{ post.uploader_name }}</a>
+                </div>
+                <div>
+                    <p class="posts-title">{{ post.title }}</p>
+                </div>
+                <div>
+                    <p class="posts-description">{{ post.description }}</p>
+                </div>
+                {% if post.image_file %}
+                    <img src="{{ url_for('static', filename='posts_images/' + post.image_file) }}" alt="picture" id="postPicture">
+                {% endif %}
+            </div>
+        {% endfor %}
 
     <script src="{{ url_for('static', filename='JS/shop.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/profile.js') }}"></script>
 {% endblock content %}

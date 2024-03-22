@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+
+
+
+
+{% block content %}
+    <div class="friends-container">
+        {% for friend in current_user.friends %}
+            <div class="friends-body">
+                {% if friend.picture %}
+                    <img src="{{ url_for('static', filename='profile_images/' + friend.picture) }}" alt="friendProfilePicture" id="friendPicture">
+                {% else %}
+                    <img src="{{ url_for('static', filename='profile_images/default/default.jpg') }}" alt="friendProfilePicture" id="friendPicture">
+                {% endif %}
+                <div>
+                    <p style="text-align: center; font-size: 24px;">{{ friend.username }}</p>
+                </div>
+                <div>
+                    {% if friend.about %}
+                        <p class="friend-about">{{ friend.about }}</p>
+                    {% endif %}
+                </div>
+                <div>
+                    <button class="friend-message-button">Üzenet</button>
+                    <button class="friend-remove-button">Eltávolítás</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

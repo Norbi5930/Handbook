@@ -4,9 +4,10 @@ from werkzeug.utils import secure_filename
 import os
 import datetime
 from random import randint
+from sqlalchemy import func
 
 from Web import app, db, bcrypt
-from .models import User, WebShopElements, Carts, Posts
+from .models import User, WebShopElements, Carts, Posts, FriendRequests, FriendList, NotificationMessage
 from .forms import RegisterForm, LoginForm, ShopUploadForm, EditProfilePictureForm, UploadPostForm
 
 
@@ -21,7 +22,6 @@ with app.app_context():
 @app.route("/")
 @app.route("/home")
 def home():
-
     return render_template("index.html", title="Kezdőlap")
 
 
@@ -66,14 +66,14 @@ def login():
 @app.route("/shop", methods=["GET", "POST"])
 def shop():
     
-    items = db.session.execute(db.select(WebShopElements)).scalars()
+    items = db.session.query(WebShopElements).order_by(func.random()).all()
     return render_template("shop.html", title="WebShop", items=items)
 
 
 @app.route("/posts", methods=["GET", "POST"])
 def posts():
 
-    posts = db.session.execute(db.select(Posts)).scalars()
+    posts = db.session.query(Posts).order_by(func.random()).all()
 
     return render_template("posts.html", title="Hírfolyam", posts=posts)
 
@@ -88,7 +88,7 @@ def shop_upload():
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        item = WebShopElements(uploader_id=current_user.id, uploader_name=current_user.username, title=form.title.data, description=form.description.data, price=form.price.data, image_file=filename, date=time)
+        item = WebShopElements(uploader_id=current_user.id,uploader_photo=current_user.picture, uploader_name=current_user.username, title=form.title.data, description=form.description.data, price=form.price.data, image_file=filename, date=time)
         db.session.add(item)
         db.session.commit()
         flash("Sikeres feltöltés!", "success")
@@ -119,7 +119,23 @@ def post_upload():
 
 @app.route("/my_profile", methods=["GET", "POST"])
 def my_profile():
-    return render_template("my_profile.html", title="Profilom", items=current_user.uploads)
+    return render_template("my_profile.html", title="Profilom", items=current_user.uploads, posts=current_user.posts)
+
+
+@app.route("/notifications", methods=["GET", "POST"])
+def notifications():
+    
+    for notification in current_user.notification:
+        notification.read = True
+    
+    db.session.commit()
+    return render_template("notification.html", title="Értesítések", notifications=current_user.notification, friend_request=FriendRequests)
+
+
+@app.route("/friends", methods=["GET", "POST"])
+def friends():
+
+    return render_template("friends.html", title="Barátok")
 
 
 @app.route("/my_profile/edit", methods=["GET", "POST"])
@@ -157,8 +173,65 @@ def profile(name):
     user = User.query.filter_by(username=name).first()
 
 
-    return render_template("profile.html", title=f"{name}", user=user, items=user.uploads) if user else render_template("index.html", title="Kezdőlap")
+    return render_template("profile.html", title=f"{name}", user=user, items=user.uploads, posts=user.posts, friendlist=FriendList) if user else render_template("index.html", title="Kezdőlap")
 
+
+@app.route("/api/get_notifications", methods=["GET"])
+def get_notifications():
+    if current_user.is_authenticated:
+        notifications = NotificationMessage.query.filter_by(owner_id=current_user.id).all()
+        notifications_data = [{"id": notification.id, "message": notification.message, "read": notification.read} for notification in notifications]
+        return jsonify({"success": True, "notifications": notifications_data})
+    else:
+        return jsonify({"success": False})
+
+@app.route("/api/friend_request", methods=["GET", "POST"])
+def friend_request():
+    data = request.get_json()
+    if data:
+        user_id = data.get("userID")
+        if FriendRequests.query.filter_by(send_id=current_user.id, received_id=user_id).first() or FriendList.query.filter_by(owner_id=current_user.id, friend_id=user_id).first():
+            return jsonify({"success": False, "errorMessage": "Ez a személy már a barátod, vagy a baráti kérelmek között szerepel!"})
+        else:
+            friend_request = FriendRequests(send_id=current_user.id, received_id=user_id, accepted=False)
+            db.session.add(friend_request)
+            db.session.commit()
+            notification = NotificationMessage(owner_id=user_id, message=f"{current_user.username} barátkérelmet küldött neked!", read=False, category="Barátkérelem", request_id=friend_request.id)
+            db.session.add(notification)
+            db.session.commit()
+            return jsonify({"success": True})
+    else:
+        return jsonify({"success": False})
+
+
+@app.route("/api/friend_request/accept", methods=["GET", "POST"])
+def accept_friend_request():
+    data = request.get_json()
+    if data:
+        request_id = data.get("requestID")
+        notification = NotificationMessage.query.get_or_404(request_id)
+        friend_request = FriendRequests.query.get_or_404(notification.request_id)
+        friend_request.accepted = True
+        friend = FriendList(owner_id=current_user.id, friend_id=friend_request.send_id)
+        db.session.add(friend)
+        db.session.commit()
+        return jsonify({"success": True})
+    else:
+        return jsonify({"success": False})
+    
+@app.route("/api/friend_request/reject", methods=["GET", "POST"])
+def reject_friend_request():
+    data = request.get_json()
+    if data:
+        request_id = data.get("requestID")
+        notification = NotificationMessage.query.get_or_404(request_id)
+        friend_request = FriendRequests.query.get_or_404(notification.request_id)
+        db.session.delete(notification)
+        db.session.delete(friend_request)
+        db.session.commit()
+        return jsonify({"success": True})
+    else:
+        return jsonify({"success": False})
 
 @app.route("/api/add_cart", methods=["GET", "POST"])
 def add_cart():
@@ -214,6 +287,26 @@ def remove_shop():
             db.session.commit()
             flash("Az objektum sikeresen törölve!", "success")
             return jsonify({"success": True})
+        
+@app.route("/api/delete_post", methods=["GET", "POST"])
+def delete_post():
+    data = request.get_json()
+
+    post_id = data.get("postID")
+    if post_id:
+        post = Posts.query.get_or_404(int(post_id))
+        if post:
+            if post.uploader_id == current_user.id:
+                db.session.delete(post)
+                db.session.commit()
+                flash("A post sikeresen törölve!", "success")
+                return jsonify({"success": True})
+            else:
+                return jsonify({"success": False, "errorMessage": "Nincs jogodban ezt a postot törölni!"})
+        else:
+            return jsonify({"success": False})
+    else:
+        return jsonify({"success": False})
         
 @app.route("/api/edit_about", methods=["GET", "POST"])
 def edit_about():

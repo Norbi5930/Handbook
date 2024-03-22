@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+
+
+{% block content %}
+
+    <div class="notification-container">
+        {% for notification in notifications %}
+            <div class="notification-body">
+                <div>
+                    <p class="notification-category">{{ notification.category }}</p>
+                </div>
+                <div>
+                    <p class="notification-message">{{ notification.message }}</p>
+                </div>
+                {% if notification.category == "Barátkérelem" %}
+                    {% if friend_request.query.get_or_404(notification.request_id).accepted == False %}
+                    <div>
+                        <button type="button" class="notification-request-accept" onclick="acceptFriendRequest('{{ notification.id }}')">Elfogadás</button>
+                        <button type="button" class="notification-request-reject" onclick="rejectFriendRequest('{{ notification.id }}')">Elutasítás</button>
+                    </div>
+                    {% else %}
+                        <p class="notification-accepted-message">Ezt a kérelmet már elfogadtad!</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <script src="{{ url_for('static', filename='JS/notification.js') }}"></script>
+{% endblock content %}

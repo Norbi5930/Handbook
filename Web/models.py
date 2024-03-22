@@ -1,5 +1,6 @@
 from Web import db, login_manager
 from flask_login import UserMixin
+from sqlalchemy import and_, or_
 
 
 @login_manager.user_loader
@@ -22,6 +23,15 @@ class User(db.Model, UserMixin):
     posts = db.relationship("Posts", backref="user_posts", lazy=True)
     cart = db.relationship("Carts", backref="user_cart", lazy=True)
     notification = db.relationship("NotificationMessage", backref="notification", lazy=True)
+    friend_requests = db.relationship("FriendRequests", foreign_keys="FriendRequests.send_id", backref="sender", lazy=True) 
+
+    @property
+    def friends(self):
+        friends = User.query.join(FriendList, or_(
+            FriendList.owner_id == self.id,
+            FriendList.friend_id == self.id
+        )).filter(User.id != self.id).all()
+        return friends
 
 
 
@@ -30,6 +40,7 @@ class WebShopElements(db.Model):
     __tablename__ = "shopelements"
     id = db.Column(db.Integer, primary_key=True)
     uploader_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    uploader_photo = db.Column(db.String(100))
     uploader_name = db.Column(db.String(30), nullable=False)
     title = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(200))
@@ -50,7 +61,7 @@ class Posts(db.Model):
     date = db.Column(db.String(30), nullable=False)
 
 class Carts(db.Model):
-   __tablename__ = "narts"
+   __tablename__ = "carts"
    id = db.Column(db.Integer, primary_key=True)
    itemID = db.Column(db.Integer, db.ForeignKey("shopelements.id"), nullable=False)
    cartOwnerID = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
@@ -63,3 +74,21 @@ class NotificationMessage(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     message = db.Column(db.String(100), nullable=False)
     read = db.Column(db.Boolean)
+    category = db.Column(db.String(30), nullable=False)
+    request_id = db.Column(db.Integer)
+
+
+
+class FriendRequests(db.Model):
+    __tablename__ = "friendrequests"
+    id = db.Column(db.Integer, primary_key=True)
+    send_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    received_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    accepted = db.Column(db.Boolean)
+
+
+class FriendList(db.Model):
+    __tablename__ = "friendlist"
+    id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    friend_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)

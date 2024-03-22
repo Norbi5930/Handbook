@@ -51,8 +51,9 @@
         </div>
       </div>
 
-
-    <h3 style="position: relative; top: 4rem;">WebShop feltöltések</h3>
+    {% if current_user.uploads %}
+      <h3 style="position: relative; top: 4rem;">WebShop feltöltések</h3>
+    {% endif %}
     <div class="shop-container">
         {% for item in items %}
             <div class="shop-body">
@@ -96,7 +97,7 @@
                       ...
                     </button>
                     <ul class="dropdown-menu">
-                      <li><button class="dropdown-item" type="button">Szerkesztés</button></li>
+                      <li><button class="dropdown-item" type="button" id="editPostButton">Szerkesztés</button></li>
                       <li><button class="dropdown-item post-delete" type="button" id="deletePostButton" onclick="deletePost('{{ post.id }}')">Törlés</button></li>
                     </ul>
                   </div>
@@ -120,7 +121,7 @@
     <script src="{{ url_for('static', filename='JS/shop.js') }}"></script>
 
 
-    <script src="{{ url_for('static', filename='JS/profile.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/myprofile.js') }}"></script>
 {% endblock content %}
 
 
