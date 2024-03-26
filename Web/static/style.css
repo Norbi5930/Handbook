@@ -209,6 +209,9 @@ body::-webkit-scrollbar {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    user-select: none;
 }
 
 .shop-name {
@@ -387,6 +390,7 @@ body::-webkit-scrollbar {
     transform: translateY(-50%);
     left: 2rem;
     cursor: pointer;
+    user-select: none;
 }
 
 .profile-name {
@@ -523,6 +527,7 @@ body::-webkit-scrollbar {
     border: none;
     top: -1rem;
     left: 38rem;
+    user-select: none;
 }
 
 .post-delete {
@@ -577,6 +582,7 @@ body::-webkit-scrollbar {
     left: 50%;
     transform: translateX(-50%);
     border-radius: 50%;
+    user-select: none;
 }
 
 @keyframes deleteButton {
@@ -850,12 +856,24 @@ body::-webkit-scrollbar {
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    user-select: none;
+}
+
+.profile-posts-uploader {
+    position: relative;
+    top: -3rem;
+    left: 2.5rem;
+    font-size: 18px;
+    text-decoration: none;
+    color: black;
 }
 
 .posts-uploader {
     position: relative;
     top: -1rem;
-    left: 2rem;
+    left: 2.5rem;
     font-size: 18px;
     text-decoration: none;
     color: black;
@@ -878,6 +896,9 @@ body::-webkit-scrollbar {
 #postPicture {
     width: 100%;
     height: 300px;
+    object-fit: cover;
+    object-position: center;
+    user-select: none;
 }
 
 .notification-container {
@@ -889,7 +910,6 @@ body::-webkit-scrollbar {
     top: 6rem;
     left: 50%;
     transform: translateX(-50%);
-    background-color: gray;
 }
 
 .notification-body {
@@ -921,6 +941,14 @@ body::-webkit-scrollbar {
     position: relative;
     font-size: 26px;
     top: 10px;
+}
+
+.notification-date {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 95%;
+    font-size: 14px;
 }
 
 @keyframes hover-request {
@@ -982,6 +1010,9 @@ body::-webkit-scrollbar {
 #friendPicture {
     width: 100%;
     max-height: 150px;
+    object-fit: cover;
+    object-position: center;
+    user-select: none;
 }
 
 .friend-about {
@@ -1000,6 +1031,60 @@ body::-webkit-scrollbar {
     top: 1rem;
     border-radius: 10px;
     background-color: #f52a2a;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 54rem;
+    overflow-y: auto;
+}
+
+.search-container::-webkit-scrollbar {
+    width: 0;
+}
+
+.search-body {
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%;
+    min-height: 10rem;
+    max-height: 10rem;
+    background-color: white;
+}
+
+#searchPicture {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 5px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-position: center;
+    object-fit: cover;
+    user-select: none;
+}
+
+.search-name {
+    position: absolute;
+    color: black;
+    text-decoration: none;
+    font-size: 28px;
+    top: 0rem;
+    left: 10rem;
+}
+
+.search-about {
+    position: absolute;
+    font-size: 20px;
+    top: 2.5rem;
+    left: 10rem;
 }
 
 @media screen and (max-width: 600px) {
@@ -1306,6 +1391,7 @@ body::-webkit-scrollbar {
         min-height: 10rem;
     }
     .notification-category {
+        transform: translateX(-2rem);
         font-size: 24px;
     }
 
@@ -1319,5 +1405,24 @@ body::-webkit-scrollbar {
 
     .notification-accepted-message {
         font-size: 18px;
+    }
+
+    .notification-date {
+        position: absolute;
+        top: 2rem;
+        left: 14rem;
+        font-size: 14px;
+    } 
+
+    .search-container {
+        height: 38rem;
+    }
+
+    .search-about {
+        font-size: 16px;
+        width: 9rem;
+        height: 7rem;
+        overflow-wrap: break-word;
+        overflow-y: auto;
     }
 }

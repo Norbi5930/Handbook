@@ -8,12 +8,12 @@
         {% for friend in current_user.friends %}
             <div class="friends-body">
                 {% if friend.picture %}
-                    <img src="{{ url_for('static', filename='profile_images/' + friend.picture) }}" alt="friendProfilePicture" id="friendPicture">
+                    <a href="{{ url_for('profile', name=friend.username) }}"><img src="{{ url_for('static', filename='profile_images/' + friend.picture) }}" alt="friendProfilePicture" id="friendPicture"></a>
                 {% else %}
-                    <img src="{{ url_for('static', filename='profile_images/default/default.jpg') }}" alt="friendProfilePicture" id="friendPicture">
+                    <a href="{{ url_for('profile', name=friend.username) }}"><img src="{{ url_for('static', filename='profile_images/default/default.jpg') }}" alt="friendProfilePicture" id="friendPicture"></a>
                 {% endif %}
                 <div>
-                    <p style="text-align: center; font-size: 24px;">{{ friend.username }}</p>
+                    <a style="font-size: 24px; color: black; text-decoration: none;" href="{{ url_for('profile', name=friend.username) }}">{{ friend.username }}</a>
                 </div>
                 <div>
                     {% if friend.about %}
@@ -22,9 +22,11 @@
                 </div>
                 <div>
                     <button class="friend-message-button">Üzenet</button>
-                    <button class="friend-remove-button">Eltávolítás</button>
+                    <button class="friend-remove-button" onclick="removeFriend('{{ friend.id }}')">Eltávolítás</button>
                 </div>
             </div>
         {% endfor %}
     </div>
+
+    <script src="{{ url_for('static', filename='JS/friends.js') }}"></script>
 {% endblock content %}

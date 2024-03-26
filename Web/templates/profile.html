@@ -20,9 +20,12 @@
             {% endif %}
         </div>
         {% if current_user.is_authenticated and current_user.id != user.id %}
-            <div>
-                <button type="button" class="profile-friend-button" id="requestButton" onclick="friendRequest('{{ user.id }}')">Barát kérelem</button>
-            </div>
+            {% if user.id in friends_data %}
+            {% else %}
+                <div>
+                    <button type="button" class="profile-friend-button" id="requestButton" onclick="friendRequest('{{ user.id }}')">Barát kérelem</button>
+                </div>
+            {% endif %}
         {% endif %}
     </div>  
 

@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 import os
 import datetime
 from random import randint
-from sqlalchemy import func
+from sqlalchemy import func, or_, and_
 
 from Web import app, db, bcrypt
 from .models import User, WebShopElements, Carts, Posts, FriendRequests, FriendList, NotificationMessage
@@ -134,7 +134,6 @@ def notifications():
 
 @app.route("/friends", methods=["GET", "POST"])
 def friends():
-
     return render_template("friends.html", title="Barátok")
 
 
@@ -172,8 +171,16 @@ def cart():
 def profile(name):
     user = User.query.filter_by(username=name).first()
 
-
     return render_template("profile.html", title=f"{name}", user=user, items=user.uploads, posts=user.posts, friendlist=FriendList) if user else render_template("index.html", title="Kezdőlap")
+
+@app.route("/search")
+def search():
+    search_data = request.args.get("search")
+    if search_data:
+        users = User.query.filter(or_(User.username.like(f"%{search_data}%")))
+        return render_template("search.html", title=search_data, users=users)
+    else:
+        return redirect(request.referrer)
 
 
 @app.route("/api/get_notifications", methods=["GET"])
@@ -193,10 +200,11 @@ def friend_request():
         if FriendRequests.query.filter_by(send_id=current_user.id, received_id=user_id).first() or FriendList.query.filter_by(owner_id=current_user.id, friend_id=user_id).first():
             return jsonify({"success": False, "errorMessage": "Ez a személy már a barátod, vagy a baráti kérelmek között szerepel!"})
         else:
+            time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
             friend_request = FriendRequests(send_id=current_user.id, received_id=user_id, accepted=False)
             db.session.add(friend_request)
             db.session.commit()
-            notification = NotificationMessage(owner_id=user_id, message=f"{current_user.username} barátkérelmet küldött neked!", read=False, category="Barátkérelem", request_id=friend_request.id)
+            notification = NotificationMessage(owner_id=user_id, message=f"{current_user.username} barátkérelmet küldött neked!", read=False, category="Barátkérelem", request_id=friend_request.id, date=time)
             db.session.add(notification)
             db.session.commit()
             return jsonify({"success": True})
@@ -211,6 +219,12 @@ def accept_friend_request():
         request_id = data.get("requestID")
         notification = NotificationMessage.query.get_or_404(request_id)
         friend_request = FriendRequests.query.get_or_404(notification.request_id)
+        time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        if friend_request.received_id == current_user.id:
+            accepted_message = NotificationMessage(owner_id=friend_request.send_id, message=f"{current_user.username} elfogadta a barátkérelmedet!", read=False, category="Üzenet", date=time)
+        else:
+            accepted_message = NotificationMessage(owner_id=friend_request.received_id, message=f"{current_user.username} elfogadta a barátkérelmedet!", read=False, category="Üzenet", date=time)
+        db.session.add(accepted_message)
         friend_request.accepted = True
         friend = FriendList(owner_id=current_user.id, friend_id=friend_request.send_id)
         db.session.add(friend)
@@ -228,6 +242,26 @@ def reject_friend_request():
         friend_request = FriendRequests.query.get_or_404(notification.request_id)
         db.session.delete(notification)
         db.session.delete(friend_request)
+        db.session.commit()
+        return jsonify({"success": True})
+    else:
+        return jsonify({"success": False})
+    
+
+@app.route("/api/friend/remove", methods=["POST"])
+def remove_friend():
+    data = request.get_json()
+
+    if data:
+        friend_id = data.get("friendID")
+
+        object = db.session.query(FriendList).filter(
+            or_(
+                and_(FriendList.owner_id == current_user.id, FriendList.friend_id == friend_id),
+                and_(FriendList.owner_id == friend_id, FriendList.friend_id == current_user.id)
+            )
+        ).first()
+        db.session.delete(object)
         db.session.commit()
         return jsonify({"success": True})
     else:

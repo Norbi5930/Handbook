@@ -76,6 +76,7 @@ class NotificationMessage(db.Model):
     read = db.Column(db.Boolean)
     category = db.Column(db.String(30), nullable=False)
     request_id = db.Column(db.Integer)
+    date = db.Column(db.String(40), nullable=False)
 
 
 

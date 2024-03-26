@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+
+
+
+
+{% block content %}
+    <div class="search-container">
+        {% for user in users %}
+            <div class="search-body">
+                {% if user.picture %}
+                    <a href="{{ url_for('profile', name=user.username)}}"><img src="{{ url_for('static', filename='profile_images/' + user.picture) }}" alt="profilePicture" id="searchPicture"></a>
+                {% else %}
+                    <a href="{{ url_for('profile', name=user.username)}}"><img src="{{ url_for('static', filename='profile_images/default/default.jpg') }}" alt="profilePicture" id="searchPicture"></a>
+                {% endif %}
+                <div>
+                    <a class="search-name" href="{{ url_for('profile', name=user.username)}}">{{ user.username }}</a>
+                </div>
+                <p class="search-about">{{ user.about }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}
