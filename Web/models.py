@@ -107,6 +107,5 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     chat_id = db.Column(db.Integer, db.ForeignKey("chat.id"))
     sender_username = db.Column(db.String(40), nullable=False)
-    message = db.Column(db.String(100), nullable=False)
-    read = db.Column(db.Boolean)
+    message = db.Column(db.String(200), nullable=False)
     date = db.Column(db.String(40), nullable=False)

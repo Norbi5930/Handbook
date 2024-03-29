@@ -207,7 +207,7 @@ def chat(user_id):
             if data:
                 message = data.get("message")
                 time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-                user_message = Message(chat_id=result.id, sender_username=current_user.username, message=message, read=False, date=time)
+                user_message = Message(chat_id=result.id, sender_username=current_user.username, message=message, date=time)
                 db.session.add(user_message)
                 db.session.commit()
                 return jsonify({"success": True})
