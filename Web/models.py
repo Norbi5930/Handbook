@@ -93,3 +93,20 @@ class FriendList(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     friend_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+class Chat(db.Model):
+    __tablename__ = "chat"
+    id = db.Column(db.Integer, primary_key=True)
+    user1_id = db.Column(db.Integer, nullable=False)
+    user2_id = db.Column(db.Integer, nullable=False)
+    messages = db.relationship("Message", backref="messages", lazy=True)
+        
+
+class Message(db.Model):
+    __tablename__ = "message"
+    id = db.Column(db.Integer, primary_key=True)
+    chat_id = db.Column(db.Integer, db.ForeignKey("chat.id"))
+    sender_username = db.Column(db.String(40), nullable=False)
+    message = db.Column(db.String(100), nullable=False)
+    read = db.Column(db.Boolean)
+    date = db.Column(db.String(40), nullable=False)

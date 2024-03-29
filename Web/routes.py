@@ -7,8 +7,10 @@ from random import randint
 from sqlalchemy import func, or_, and_
 
 from Web import app, db, bcrypt
-from .models import User, WebShopElements, Carts, Posts, FriendRequests, FriendList, NotificationMessage
+from .models import User, WebShopElements, Carts, Posts, FriendRequests, FriendList, NotificationMessage, Chat, Message
 from .forms import RegisterForm, LoginForm, ShopUploadForm, EditProfilePictureForm, UploadPostForm
+
+
 
 
 with app.app_context():
@@ -28,6 +30,8 @@ def home():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("my_profile"))
     form = RegisterForm()
 
     if form.validate_on_submit():
@@ -44,6 +48,8 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("my_profile"))
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -181,7 +187,36 @@ def search():
         return render_template("search.html", title=search_data, users=users)
     else:
         return redirect(request.referrer)
+    
 
+def chat_scan(user_id):
+    chat = db.session.query(Chat).filter(
+        or_(
+            and_(Chat.user1_id == current_user.id, Chat.user2_id == user_id),
+            and_(Chat.user1_id == user_id, Chat.user2_id == current_user.id)
+        )
+    ).first()
+    return chat
+
+@app.route("/chat/<user_id>", methods=["GET", "POST"])
+def chat(user_id):
+    result = chat_scan(user_id)
+    if result:
+        if request.method == "POST":
+            data = request.get_json()
+            if data:
+                message = data.get("message")
+                time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+                user_message = Message(chat_id=result.id, sender_username=current_user.username, message=message, read=False, date=time)
+                db.session.add(user_message)
+                db.session.commit()
+                return jsonify({"success": True})
+    else:
+        chat = Chat(user1_id = current_user.id, user2_id=user_id)
+        db.session.add(chat)
+        db.session.commit()
+        result = chat
+    return render_template("chat.html", title="Chat", chat=result)
 
 @app.route("/api/get_notifications", methods=["GET"])
 def get_notifications():

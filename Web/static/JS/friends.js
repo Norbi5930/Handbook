@@ -24,3 +24,8 @@ function removeFriend(friendID) {
         console.error("Error: ", error)
     })
 }
+
+
+function chatFriend(username) {
+    window.location.href = "/chat/" + username
+}

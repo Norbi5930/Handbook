@@ -20,10 +20,10 @@
                         <p class="friend-about">{{ friend.about }}</p>
                     {% endif %}
                 </div>
-                <div>
-                    <button class="friend-message-button">Üzenet</button>
-                    <button class="friend-remove-button" onclick="removeFriend('{{ friend.id }}')">Eltávolítás</button>
-                </div>
+                
+                <a class="friend-message-button" href="{{ url_for('chat', user_id=friend.id) }}">Üzenet</a>
+                <button class="friend-remove-button" onclick="removeFriend('{{ friend.id }}')">Eltávolítás</button>
+
             </div>
         {% endfor %}
     </div>

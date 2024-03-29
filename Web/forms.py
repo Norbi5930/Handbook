@@ -53,3 +53,4 @@ class UploadPostForm(FlaskForm):
 class EditProfilePictureForm(FlaskForm):
     file = FileField("Fájl", validators=[DataRequired(), FileAllowed(["jpg", "png"], "Csak képeket tölthetsz fel! (JPG, PNG)")])
     submit = SubmitField("Mentés")
+

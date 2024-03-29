@@ -1020,15 +1020,19 @@ body::-webkit-scrollbar {
 }
 
 .friend-message-button {
-    position: relative;
-    top: 1rem;
+    position: absolute;
+    top: 60%;
     border-radius: 10px;
     background-color: #0996ed;
+    font-size: 22px;
+    color: black;
+    text-decoration: none;
 }
 
 .friend-remove-button {
-    position: relative;
-    top: 1rem;
+    position: absolute;
+    top: 70%;
+    left: 0;
     border-radius: 10px;
     background-color: #f52a2a;
 }
@@ -1085,6 +1089,70 @@ body::-webkit-scrollbar {
     font-size: 20px;
     top: 2.5rem;
     left: 10rem;
+}
+
+.chat-container {
+    position: relative;
+    top: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 48rem;
+    overflow-y: auto;
+}
+
+.chat-container::-webkit-scrollbar {
+    width: 0;
+}
+
+.chat-body {
+    position: relative;
+    display: flex;
+    top: 1rem;
+    left: 4rem;
+    font-size: 28px;
+    max-width: 90%;
+    flex-direction: column-reverse;
+    margin-bottom: 5px;
+}
+
+.chat-username {
+    position: relative;
+    font-size: 20px;
+    top: 1rem;
+}
+
+.chat-message {
+    display: inline-block;
+    min-width: 2rem;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    padding: 0 1rem 0 1rem;
+    background-color: white;
+    border-radius: 20px;
+}
+
+.chat-input-container {
+    position: relative;
+    width: 60%;
+    top: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.chat-input {
+    position: relative;
+    width: 80%;
+    font-size: 24px;
+    border-radius: 10px;
+}
+
+.chat-button {
+    position: relative;
+    width: 6rem;
+    font-size: 26px;
+    left: 2rem;
+    border-radius: 10px;
 }
 
 @media screen and (max-width: 600px) {
@@ -1424,5 +1492,23 @@ body::-webkit-scrollbar {
         height: 7rem;
         overflow-wrap: break-word;
         overflow-y: auto;
+    }
+
+    .chat-container {
+        width: 90%;
+        height: 34rem;
+    }
+
+    .chat-input-container {
+        width: 80%;
+    }
+
+    .chat-input {
+        width: 100%;
+    }
+
+    .chat-button {
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
