@@ -28,10 +28,11 @@ class User(db.Model, UserMixin):
     @property
     def friends(self):
         friends = User.query.join(FriendList, or_(
-            FriendList.owner_id == self.id,
-            FriendList.friend_id == self.id
+            and_(FriendList.owner_id == self.id, FriendList.friend_id == User.id),
+            and_(FriendList.friend_id == self.id, FriendList.owner_id == User.id)
         )).filter(User.id != self.id).all()
         return friends
+        
 
 
 
