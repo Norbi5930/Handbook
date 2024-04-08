@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+
+
+
+{% block content %}
+
+    <div class="chats-container">
+        {% for chat in current_user.chats %}
+            <a 
+            {% if chat.user1_id == current_user.id %}
+                href="{{ url_for('chat', user_id=chat.user2_id) }}"
+            {% else %}
+                href="{{ url_for('chat', user_id=chat.user1_id) }}"
+            {% endif %}
+            style="text-decoration: none;">
+                <div class="chats-body">
+                    {% if chat.user1_id == current_user.id %}
+                        {% if User.query.get(chat.user2_id).picture %}
+                            <img src="{{ url_for('static', filename='profile_images/' + User.query.get(chat.user2_id).picture) }}" alt="ProfilePicture" id="chatsProfilePicture">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='profile_images/default/default.jpg')}}" alt="ProfilePicture" id="chatsProfilePicture">
+                        {% endif %}
+                        <p class="chats-username">{{ chat.user2_name }}</p>
+                    {% else %}
+                        {% if User.query.get(chat.user1_id).picture %}
+                            <img src="{{ url_for('static', filename='profile_images/' + User.query.get(chat.user1_id).picture) }}" alt="ProfilePicture" id="chatsProfilePicture">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='profile_images/default/default.jpg')}}" alt="ProfilePicture" id="chatsProfilePicture">
+                        {% endif %}
+                        <p class="chats-username">{{ chat.user1_name }}</p>
+                    {% endif %}
+                    {% if chat.read_message %}
+                        <span class="chats-ping"></span>
+                    {% endif %}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock content %}

@@ -25,6 +25,15 @@ class User(db.Model, UserMixin):
     notification = db.relationship("NotificationMessage", backref="notification", lazy=True)
     friend_requests = db.relationship("FriendRequests", foreign_keys="FriendRequests.send_id", backref="sender", lazy=True) 
 
+
+    @property 
+    def chats(self):
+        chats = db.session.query(Chat).filter(or_(
+            Chat.user1_id == self.id,
+            Chat.user2_id == self.id
+        )).all()
+        return chats
+
     @property
     def friends(self):
         friends = User.query.join(FriendList, or_(
@@ -33,9 +42,6 @@ class User(db.Model, UserMixin):
         )).filter(User.id != self.id).all()
         return friends
         
-
-
-
 
 class WebShopElements(db.Model):
     __tablename__ = "shopelements"
@@ -100,7 +106,10 @@ class Chat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user1_id = db.Column(db.Integer, nullable=False)
     user2_id = db.Column(db.Integer, nullable=False)
+    user1_name = db.Column(db.String(30), nullable=False)
+    user2_name = db.Column(db.String(30), nullable=False)
     messages = db.relationship("Message", backref="messages", lazy=True)
+    read_message = db.Column(db.Boolean)
         
 
 class Message(db.Model):

@@ -1,7 +1,7 @@
 
 const navPing = document.getElementById("navPing")
 window.addEventListener("DOMContentLoaded", function() {
-    get_notifications();
+    this.setInterval(get_notifications, 100000);
 })
 
 

@@ -999,8 +999,32 @@ body::-webkit-scrollbar {
     height: 54rem;
 }
 
+.friends-search {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36rem;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+@keyframes focusFriendsSearch {
+    from {
+        box-shadow: 0 0 0px rgb(0, 0, 0);
+    }
+
+    to {
+        box-shadow: 0 0 30px rgb(0, 0, 0);
+    }
+}
+
+.friends-search:focus {
+    animation: focusFriendsSearch 1s forwards;
+}
+
 .friends-body {
     position: relative;
+    top: 1rem;
     width: 10rem;
     min-height: 50%;
     background-color: white;
@@ -1153,6 +1177,64 @@ body::-webkit-scrollbar {
     font-size: 26px;
     left: 2rem;
     border-radius: 10px;
+}
+
+.chats-container {
+    position: relative;
+    top: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 48rem;
+    overflow-y: auto;
+}
+
+.chats-container::-webkit-scrollbar {
+    width: 0;
+}
+
+.chats-body {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    min-height: 4rem;
+    background-color: white;
+    margin-top: 25px;
+}
+
+#chatsProfilePicture {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    object-position: center;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.chats-username {
+    position: relative;
+    text-decoration: none;
+    color: black;
+    font-size: 24px;
+    left: 2rem;
+}
+
+.chats-ping {
+    position: relative;
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 28px;
+    background-color: red;
+    color: black;
+    left: 60%;
+    opacity: .7;
 }
 
 @media screen and (max-width: 600px) {
@@ -1480,7 +1562,11 @@ body::-webkit-scrollbar {
         top: 2rem;
         left: 14rem;
         font-size: 14px;
-    } 
+    }
+
+    .friends-search {
+        width: 18rem;
+    }
 
     .search-container {
         height: 38rem;
@@ -1499,6 +1585,14 @@ body::-webkit-scrollbar {
         height: 34rem;
     }
 
+    .chat-username {
+        font-size: 18px;
+    }
+
+    .chat-message {
+        font-size: 20px;
+    }
+
     .chat-input-container {
         width: 80%;
     }
@@ -1510,5 +1604,14 @@ body::-webkit-scrollbar {
     .chat-button {
         left: 50%;
         transform: translateX(-50%);
+    }
+
+    .chats-container {
+        width: 100%;
+        height: 40rem;
+    }
+
+    .chats-ping {
+        left: 9rem;
     }
 }

@@ -140,8 +140,23 @@ def notifications():
 
 @app.route("/friends", methods=["GET", "POST"])
 def friends():
-    return render_template("friends.html", title="Barátok")
+    return render_template("friends.html", title="Barátok", friends=current_user.friends)
 
+
+@app.route("/friends/search", methods=["GET"])
+def friends_search():
+    return redirect(url_for("friends"))
+    #search_data = request.args.get("search")
+    #if search_data:
+    #    print(search_data)
+    #    friends = User.query.join(FriendList, or_(
+    #        and_(FriendList.owner_id == current_user.id, FriendList.friend_id == current_user.id),
+    #        and_(User.username == search_data)
+    #    )).all()
+    #    return render_template("friends.html", title=f'Barátok "{search_data}"', friends=friends)
+    #else:
+    #    return redirect(url_for("friends"))
+    
 
 @app.route("/my_profile/edit", methods=["GET", "POST"])
 def edit_proife():
@@ -189,6 +204,10 @@ def search():
         return redirect(request.referrer)
     
 
+@app.route("/chats", methods=["GET"])
+def chats():
+    return render_template("chats.html", title="Chatek", User=User)
+
 def chat_scan(user_id):
     chat = db.session.query(Chat).filter(
         or_(
@@ -208,15 +227,18 @@ def chat(user_id):
                 message = data.get("message")
                 time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
                 user_message = Message(chat_id=result.id, sender_username=current_user.username, message=message, date=time)
+                result.read_message = True
                 db.session.add(user_message)
                 db.session.commit()
                 return jsonify({"success": True})
     else:
-        chat = Chat(user1_id = current_user.id, user2_id=user_id)
+        username = User.query.get_or_404(user_id).username
+        chat = Chat(user1_id = current_user.id, user2_id=user_id, user1_name=current_user.username, user2_name=username, read_message=False)
         db.session.add(chat)
         db.session.commit()
         result = chat
     return render_template("chat.html", title="Chat", chat=result)
+
 
 @app.route("/api/get_notifications", methods=["GET"])
 def get_notifications():
