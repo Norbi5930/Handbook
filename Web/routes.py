@@ -102,6 +102,7 @@ def shop_upload():
     return render_template('shop_upload.html', title="Feltöltés", form=form)
 
 @app.route("/post/upload", methods=["GET", "POST"])
+@login_required
 def post_upload():
     form = UploadPostForm()
 
@@ -124,11 +125,13 @@ def post_upload():
 
 
 @app.route("/my_profile", methods=["GET", "POST"])
+@login_required
 def my_profile():
     return render_template("my_profile.html", title="Profilom", items=current_user.uploads, posts=current_user.posts)
 
 
 @app.route("/notifications", methods=["GET", "POST"])
+@login_required
 def notifications():
     
     for notification in current_user.notification:
@@ -139,6 +142,7 @@ def notifications():
 
 
 @app.route("/friends", methods=["GET", "POST"])
+@login_required
 def friends():
     return render_template("friends.html", title="Barátok", friends=current_user.friends)
 
@@ -159,6 +163,7 @@ def friends_search():
     
 
 @app.route("/my_profile/edit", methods=["GET", "POST"])
+@login_required
 def edit_proife():
     form = EditProfilePictureForm()
 
@@ -205,6 +210,7 @@ def search():
     
 
 @app.route("/chats", methods=["GET"])
+@login_required
 def chats():
     return render_template("chats.html", title="Chatek", User=User)
 
@@ -218,6 +224,7 @@ def chat_scan(user_id):
     return chat
 
 @app.route("/chat/<user_id>", methods=["GET", "POST"])
+@login_required
 def chat(user_id):
     result = chat_scan(user_id)
     if result:
