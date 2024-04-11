@@ -13,6 +13,16 @@
                     <img src="{{ url_for('static', filename='profile_images/default/default.jpg') }}" alt="profilePicture" id="postProfilePicture">
                 {% endif %}
                 <div>
+                    <div class="btn-group" style="position: absolute;">
+                      <button type="button" class="profile-post-delete" data-bs-toggle="dropdown" aria-expanded="false">
+                        ...
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><button class="dropdown-item post-delete" type="button" id="reportPostButton" onclick="reportPost('{{ post.id }}')">Jelentés</button></li>
+                      </ul>
+                    </div>
+                </div>
+                <div>
                     <a class="posts-uploader" href="{{ url_for('profile', name=post.uploader_name) }}">{{ post.uploader_name }}</a>
                 </div>
                 <div>
@@ -27,4 +37,6 @@
             </div>
         {% endfor %}
     </div>
+
+    <script src="{{ url_for('static', filename='JS/posts.js') }}"></script>
 {% endblock content %}

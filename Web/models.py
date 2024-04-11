@@ -119,3 +119,12 @@ class Message(db.Model):
     sender_username = db.Column(db.String(40), nullable=False)
     message = db.Column(db.String(200), nullable=False)
     date = db.Column(db.String(40), nullable=False)
+
+
+class PostReport(db.Model):
+    __tablename__ = "postreport"
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, nullable=False)
+    post_owner_id = db.Column(db.Integer, nullable=False)
+    reporter_id = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.String(40))

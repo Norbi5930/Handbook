@@ -6,8 +6,8 @@ import datetime
 from random import randint
 from sqlalchemy import func, or_, and_
 
-from Web import app, db, bcrypt
-from .models import User, WebShopElements, Carts, Posts, FriendRequests, FriendList, NotificationMessage, Chat, Message
+from . import app, db, bcrypt
+from .models import User, WebShopElements, Carts, Posts, FriendRequests, FriendList, NotificationMessage, Chat, Message, PostReport
 from .forms import RegisterForm, LoginForm, ShopUploadForm, EditProfilePictureForm, UploadPostForm
 
 
@@ -445,6 +445,24 @@ def change_email():
             return jsonify({"success": False, "errorMessage": "Jelenleg ez az e-mail címe!"})
     else:
         jsonify({"success": False})
+
+
+@app.route("/api/report_post", methods=["POST"])
+def report_post():
+    data = request.get_json()
+    post_id = data.get("postID")
+
+    if post_id:
+        post = Posts.query.get_or_404(post_id)
+        time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(time)
+        report = PostReport(post_id=post_id, post_owner_id=post.uploader_id, reporter_id=current_user.id, date=time)
+        db.session.add(report)
+        db.session.commit()
+        return jsonify({"success": True})
+    else:
+        flash("A művelet nem sikerült, kérlek próbáld újra később!", "danger")
+        return jsonify({"success": False})
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
