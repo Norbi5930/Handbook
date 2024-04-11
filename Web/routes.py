@@ -260,6 +260,7 @@ def get_notifications():
 def friend_request():
     data = request.get_json()
     if data:
+        print("asd")
         user_id = data.get("userID")
         if FriendRequests.query.filter_by(send_id=current_user.id, received_id=user_id).first() or FriendList.query.filter_by(owner_id=current_user.id, friend_id=user_id).first():
             return jsonify({"success": False, "errorMessage": "Ez a személy már a barátod, vagy a baráti kérelmek között szerepel!"})
