@@ -6,17 +6,19 @@
 {% block content %}
     <div class="search-container">
         {% for user in users %}
+            <a href="{{ url_for('profile', name=user.username)}}">
             <div class="search-body">
                 {% if user.picture %}
-                    <a href="{{ url_for('profile', name=user.username)}}"><img src="{{ url_for('static', filename='profile_images/' + user.picture) }}" alt="profilePicture" id="searchPicture"></a>
+                    <img src="{{ url_for('static', filename='profile_images/' + user.picture) }}" alt="profilePicture" id="searchPicture">
                 {% else %}
-                    <a href="{{ url_for('profile', name=user.username)}}"><img src="{{ url_for('static', filename='profile_images/default/default.jpg') }}" alt="profilePicture" id="searchPicture"></a>
+                   <img src="{{ url_for('static', filename='profile_images/default/default.jpg') }}" alt="profilePicture" id="searchPicture">
                 {% endif %}
                 <div>
-                    <a class="search-name" href="{{ url_for('profile', name=user.username)}}">{{ user.username }}</a>
+                    <p class="search-name" style="color: black;">{{ user.username }}</p>
                 </div>
-                <p class="search-about">{{ user.about }}</p>
+                <p class="search-about" style="color:  black;">{{ user.about }}</p>
             </div>
+            </a>
         {% endfor %}
     </div>
 {% endblock content %}
