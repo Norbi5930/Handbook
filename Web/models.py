@@ -125,6 +125,8 @@ class PostReport(db.Model):
     __tablename__ = "postreport"
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, nullable=False)
+    post_title = db.Column(db.String(60), nullable=False)
     post_owner_id = db.Column(db.Integer, nullable=False)
     reporter_id = db.Column(db.Integer, nullable=False)
+    reporter_name = db.Column(db.String(40), nullable=False)
     date = db.Column(db.String(40))

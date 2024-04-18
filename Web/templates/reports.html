@@ -1,0 +1,18 @@
+{% extends "index.html" %}
+
+
+
+{% block content %}
+
+    <div class="reports-container">
+        {% for report in reports %}
+            <div class="reports-body">
+                <a href="{{ url_for('post', id=report.post_id) }}" style="color: black; text-decoration: none;"><p class="reports-title">Post cím: {{ report.post_title }}</p></a>
+                <div class="reports-name">
+                    <p>Bejelentő neve: <a href="{{ url_for('profile', name=report.reporter_name) }}" style="color: black; text-decoration: none;">{{ report.reporter_name }}</a></p>
+                </div>
+                <p class="reports-date">{{ report.date }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

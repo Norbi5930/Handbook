@@ -1237,6 +1237,106 @@ body::-webkit-scrollbar {
     opacity: .7;
 }
 
+.reports-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
+    top: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    height: 54rem;
+    overflow-y: auto;
+}
+
+.reports-container::-webkit-scrollbar {
+    width: 0;
+}
+
+.reports-body {
+    position: relative;
+    min-width: 18rem;
+    height: 25%;
+    background-color: white;
+    border-radius: 15px;
+    margin: 5px;
+}
+
+.reports-title {
+    position: relative;
+    font-size: 28px;
+    text-align: center;
+}
+
+.reports-name {
+    position: relative;
+    color: black;
+    text-decoration: none;
+    font-size: 24px;
+    top: 1rem;
+}
+
+.reports-date {
+    position: relative;
+    text-align: end;
+    font-size: 18px;
+    top: 2rem;
+    margin-right: 10px;
+}
+
+.posts-button-container {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 1rem;
+}
+
+#declineReport {
+    font-size: 20px;
+    margin-right: 2rem;
+    border-radius: 10px;
+    background-color: #0996ed;
+}
+
+#declineReport:hover {
+    animation: declineReport 1.5s forwards;
+}
+
+@keyframes declineReport {
+    0% {
+        font-size: 20px;
+    }
+
+    100% {
+        font-size: 28px;
+        box-shadow: 0 0 50px rgb(9, 150, 237);
+    }
+}
+
+#deletePost {
+    font-size: 20px;
+    margin-left: 2rem;
+    border-radius: 10px;
+    background-color: #f52a2a;
+}
+
+#deletePost:hover {
+    animation: deletePost 1.5s forwards;
+}
+
+@keyframes deletePost {
+    0% {
+        font-size: 20px;
+    }
+
+    100% {
+        font-size: 28px;
+        box-shadow: 0 0 50px rgb(245, 42, 42);
+    }
+}
+
 @media screen and (max-width: 600px) {
     .panel-container {
         width: 16rem;
@@ -1613,5 +1713,10 @@ body::-webkit-scrollbar {
 
     .chats-ping {
         left: 9rem;
+    }
+
+    .reports-body {
+        left: 50%;
+        transform: translateX(-50%);
     }
 }

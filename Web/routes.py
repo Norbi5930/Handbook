@@ -9,6 +9,7 @@ from sqlalchemy import func, or_, and_
 from . import app, db, bcrypt
 from .models import User, WebShopElements, Carts, Posts, FriendRequests, FriendList, NotificationMessage, Chat, Message, PostReport
 from .forms import RegisterForm, LoginForm, ShopUploadForm, EditProfilePictureForm, UploadPostForm
+from .email_sender import DeletePostMail
 
 
 
@@ -247,6 +248,42 @@ def chat(user_id):
     return render_template("chat.html", title="Chat", chat=result)
 
 
+@app.route("/reports", methods=["GET", "POST"])
+def reports():
+
+    if current_user.admin:
+        reports = db.session.execute(db.select(PostReport)).scalars()
+        return render_template("reports.html", title="Bejelentések", reports=reports)
+    else:
+        return redirect(url_for("home"))
+    
+
+
+@app.route("/posts/<id>", methods=["GET", "POST"])
+def post(id):
+    post = Posts.query.get(id)
+
+    if request.method == "POST":
+        data = request.get_json()
+        if data:
+            code = data.get("code")
+            if code == 700 and current_user.admin:
+                try:
+                    reported_user = User.query.get(post.uploader_id)
+                    report_message = data.get("reportMessage")
+                    message = f"Kedves {reported_user.username}, az ön egyik postja törlésre került a következő indokkal: \n {report_message} \n A törlést elvégző moderátor neve: {current_user.username} \n Ha helytelennek ítélte meg az eltávolítást, kérjük jelezze!"
+                    DeletePostMail(reported_user.email, message).send_mail()
+                    db.session.delete(post)
+                    db.session.commit() 
+                    flash("A post sikeresen törlésre került!", "success")
+                    return redirect(url_for("reports"))
+                except Exception as error:
+                    print(error)
+                    flash("A művelet nem sikerült, kérlek próbáld újra később!", "danger")
+                    return redirect(url_for("reports"))
+    return render_template("post.html", title=f"{post.title}", post=post)
+
+
 @app.route("/api/get_notifications", methods=["GET"])
 def get_notifications():
     if current_user.is_authenticated:
@@ -260,7 +297,6 @@ def get_notifications():
 def friend_request():
     data = request.get_json()
     if data:
-        print("asd")
         user_id = data.get("userID")
         if FriendRequests.query.filter_by(send_id=current_user.id, received_id=user_id).first() or FriendList.query.filter_by(owner_id=current_user.id, friend_id=user_id).first():
             return jsonify({"success": False, "errorMessage": "Ez a személy már a barátod, vagy a baráti kérelmek között szerepel!"})
@@ -464,7 +500,7 @@ def report_post():
         post = Posts.query.get_or_404(post_id)
         time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(time)
-        report = PostReport(post_id=post_id, post_owner_id=post.uploader_id, reporter_id=current_user.id, date=time)
+        report = PostReport(post_id=post_id, post_title=post.title, post_owner_id=post.uploader_id, reporter_id=current_user.id, reporter_name=current_user.username, date=time)
         db.session.add(report)
         db.session.commit()
         return jsonify({"success": True})

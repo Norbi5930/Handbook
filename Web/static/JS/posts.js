@@ -15,3 +15,20 @@ function reportPost(postID) {
         }
     })
 }
+
+
+function deletePost(postID, code) {
+    let reportMessage = document.getElementById("reportMessage");
+    fetch("/posts/" + postID, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            code: code,
+            reportMessage: reportMessage.value
+        })
+    })
+    .then(response => response.json())
+    .then(data => {})
+}

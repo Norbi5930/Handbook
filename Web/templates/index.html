@@ -50,7 +50,7 @@
                       <li><a class="dropdown-item" href="{{ url_for('friends') }}">Barátlista</a></li>
                       <li><a class="dropdown-item" href="{{ url_for('cart') }}">Kosaram</a></li>
                       {% if current_user.admin %}
-                        <li><a class="dropdown-item" href="">Reportok</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('reports') }}">Reportok</a></li>
                       {% endif %}
                       <li>
                         <hr class="dropdown-divider">

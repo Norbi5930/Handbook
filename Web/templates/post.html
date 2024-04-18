@@ -1,0 +1,66 @@
+{% extends "index.html" %}
+
+
+
+{% block content %}
+    <div class="posts-container">
+        <div class="posts-body" style="top: 6rem;">
+            {% if post.uploader_photo %}
+                <img src="{{ url_for('static', filename='profile_images/' + post.uploader_photo) }}" alt="profilePicture" id="postProfilePicture">
+            {% else %}
+                <img src="{{ url_for('static', filename='profile_images/default/default.jpg') }}" alt="profilePicture" id="postProfilePicture">
+            {% endif %}
+            <div>
+                <div class="btn-group" style="position: absolute;">
+                  <button type="button" class="profile-post-delete" data-bs-toggle="dropdown" aria-expanded="false">
+                    ...
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><button class="dropdown-item post-delete" type="button" id="reportPostButton" onclick="reportPost('{{ post.id }}')">Jelentés</button></li>
+                  </ul>
+                </div>
+            </div>
+            <div>
+                <a class="posts-uploader" href="{{ url_for('profile', name=post.uploader_name) }}">{{ post.uploader_name }}</a>
+            </div>
+            <div>
+                <p class="posts-title">{{ post.title }}</p>
+            </div>
+            <div>
+                <p class="posts-description">{{ post.description }}</p>
+            </div>
+            {% if post.image_file %}
+                <img src="{{ url_for('static', filename='posts_images/' + post.image_file) }}" alt="picture" id="postPicture">
+            {% endif %}
+            {% if current_user.admin %}
+                <div class="posts-button-container">
+                    <button type="button" id="declineReport">Report elutasítása</button>
+                    <button type="button" id="deletePost" data-bs-toggle="modal" data-bs-target="#deleteModal">Post törlése</button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% if current_user.admin %}
+        <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Post törlés</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label>Indok:</label>
+                    <input type="text" class="form-control" id="reportMessage">
+                    <label>A művelet után a post véglegesen törlődik!</label>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégse</button>
+                  <button type="button" class="btn btn-danger" onclick="deletePost('{{ post.id}}', 700)" data-bs-dismiss="modal">Törlés</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+    {% endif %}
+    <script src="{{ url_for('static', filename='JS/posts.js') }}"></script>
+{% endblock content %}
